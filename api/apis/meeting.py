@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from repository.meeting import create_meeting
 from integrations.resend import send_email
+from services.zoom import get_access_token, create_meeting as create_zoom_meeting
 
 api = Namespace('meetings', description='Meetings related operations')
 
@@ -12,6 +13,8 @@ create_meeting_model = api.model('Create a meeting', {
 class MeetingOperations(Resource):
     @api.expect(create_meeting_model)
     def post(self):
-        meeting_uri = create_meeting()
-        send_email(meeting_uri)
-        return {"results": "Success!"}
+        res = create_zoom_meeting()
+        meeting_url = res['join_url']
+        # meeting_uri = create_meeting()
+        # send_email(meeting_uri)
+        return {"results": f"{meeting_url}"}
