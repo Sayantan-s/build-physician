@@ -8,6 +8,9 @@ SCOPES = ['https://www.googleapis.com/auth/meetings.space.created']
 CREDENTIAL = "client_secret_735258533581-totb5tqppc6sknottk4djqq8mmr5g810.apps.googleusercontent.com.json"
 
 
+class GoogleMeet:
+    creds = None
+    
 def get_token():
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -20,8 +23,7 @@ def get_token():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'client_secret_735258533581-totb5tqppc6sknottk4djqq8mmr5g810.apps.googleusercontent.com.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIAL, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:

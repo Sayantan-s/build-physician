@@ -1,5 +1,4 @@
 import requests
-from requests.auth import HTTPBasicAuth
 import json
 
 CLIENT_ID = 'hW_qwTCaRcW4iZr4LxGZtw'
