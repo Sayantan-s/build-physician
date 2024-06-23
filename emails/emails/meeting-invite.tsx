@@ -1,8 +1,8 @@
 import {
   Body,
   Button,
-  Container,
   Column,
+  Container,
   Head,
   Heading,
   Hr,
@@ -12,8 +12,8 @@ import {
   Preview,
   Row,
   Section,
-  Text,
   Tailwind,
+  Text,
 } from "@react-email/components";
 import * as React from "react";
 
@@ -28,10 +28,6 @@ interface VercelInviteUserEmailProps {
   inviteFromIp?: string;
   inviteFromLocation?: string;
 }
-
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
 
 export const VercelInviteUserEmail = ({
   username,
@@ -55,7 +51,7 @@ export const VercelInviteUserEmail = ({
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
             <Section className="mt-[32px]">
               <Img
-                src={`${baseUrl}/static/vercel-logo.png`}
+                src={`https://cdn.svgporn.com/logos/apidog-icon.svg`}
                 width="40"
                 height="37"
                 alt="Vercel"
@@ -91,7 +87,7 @@ export const VercelInviteUserEmail = ({
                 </Column>
                 <Column align="center">
                   <Img
-                    src={`${baseUrl}/static/vercel-arrow.png`}
+                    src={`https://cdn.svgporn.com/logos/apidog-icon.svg`}
                     width="12"
                     height="9"
                     alt="invited you to"
@@ -141,11 +137,11 @@ export const VercelInviteUserEmail = ({
 
 VercelInviteUserEmail.PreviewProps = {
   username: "alanturing",
-  userImage: `${baseUrl}/static/vercel-user.png`,
+  userImage: `https://cdn.svgporn.com/logos/apidog-icon.svg`,
   invitedByUsername: "Alan",
   invitedByEmail: "alan.turing@example.com",
   teamName: "Enigma",
-  teamImage: `${baseUrl}/static/vercel-team.png`,
+  teamImage: `https://cdn.svgporn.com/logos/apidog-icon.svg`,
   inviteLink: "https://vercel.com/teams/invite/foo",
   inviteFromIp: "204.13.186.218",
   inviteFromLocation: "São Paulo, Brazil",
