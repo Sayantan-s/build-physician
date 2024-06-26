@@ -1,7 +1,8 @@
 import resend
+from config import RESEND_API_KEY
 from flask import jsonify
 
-resend.api_key = "re_J62p2TR7_BYPAMPRfQBeAN2ZLLBboWFNY"
+resend.api_key = RESEND_API_KEY
 
 def send_email(meeting_uri: str):
     params: resend.Emails.SendParams = {

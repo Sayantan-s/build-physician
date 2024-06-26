@@ -2,7 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from repository.meeting import create_meeting
 from integrations.resend import send_email
 from services.zoom import get_access_token, create_meeting as create_zoom_meeting
-from integrations.mq import email_queue
+from integrations.mq.emails import email_queue
 
 api = Namespace('meetings', description='Meetings related operations')
 
@@ -18,5 +18,5 @@ class MeetingOperations(Resource):
         # meeting_url = res['join_url']
         # meeting_uri = create_meeting()
         # send_email(meeting_uri)
-        email_queue.publish()
+        email_queue.publish({ "name": "1" })
         return {"results": f"Success"}
