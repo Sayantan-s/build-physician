@@ -32,5 +32,20 @@ export const theme: DefaultTheme = {
       dark: "#252324",
     },
   },
-  fonts: [],
+  font: {
+    type: {
+      prompt: [`"Prompt"`, "sans-serif"],
+    },
+    size: {
+      xs: 1.2,
+      sm: 1.4,
+      base: 1.6,
+      md: 1.8,
+      lg: 2.0,
+      xl: 2.4,
+      "2xl": 3.6,
+      "3xl": 4.0,
+      "4xl": 4.8,
+    },
+  },
 };
