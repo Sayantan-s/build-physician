@@ -1,5 +1,4 @@
 import uuid
-import json
 
 class Response:
     def __init__(self, status: int, data) -> None:
@@ -18,6 +17,6 @@ class Response:
         return {
             "requestId":str(uuid.uuid4()),
             "status": self.status,
-            "error": json.dumps(self.data),
+            "error": self.data,
             "success": False
         }

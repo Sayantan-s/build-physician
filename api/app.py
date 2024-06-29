@@ -6,6 +6,7 @@ from apis import meeting_api,auth_api
 from constants.uri import MEETING_ENDPOINT,AUTH_ENDPOINT
 from integrations.mq.emails import email_queue
 
+
 app = Flask(__name__)
 api = Api(app, version='1.0', title='My API', description='A simple demonstration API')
 

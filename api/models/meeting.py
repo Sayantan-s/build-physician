@@ -7,7 +7,10 @@ from typing import List
 api = Namespace('meetings', description='Meetings related operations')
 
 create_meeting_config = api.model('Create a meeting > Config', {
-    "time": fields.Integer(required=True)
+    "epoch": fields.Integer(required=True),
+    "duration": fields.Integer(required=True),
+    "topic": fields.String(required=True),
+    "agenda": fields.String(required=True)
 })
 
 create_meeting_model = api.model('Create a meeting', {
@@ -18,7 +21,10 @@ create_meeting_model = api.model('Create a meeting', {
 })
 
 class ConfigModel(BaseModel):
-    time: int = Field(..., description="Time of the meeting in minutes")
+    epoch: int = Field(description="Epoch of the meeting")
+    duration: int = Field(required=True, description="Duration of the meeting")
+    topic: str = Field(required=True, description="Topic of the meeting")
+    agenda: str = Field(required="Agenda of the meeting")
 
 class CreateMeetingModel(BaseModel):
     meetingProvider: str = Field(description='Meeting Provider like Zoom or Google Meet', pattern="^(zoom|gmeet)$")

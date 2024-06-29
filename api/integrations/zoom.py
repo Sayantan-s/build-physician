@@ -23,3 +23,7 @@ class Zoom:
         response = requests.post(url,data=payload)
         access_token = response.json()['access_token']
         return access_token
+    
+class ZoomMeeting:
+    def create():
+        print('Zoom meeting created...')

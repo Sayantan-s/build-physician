@@ -17,7 +17,7 @@ class MeetingOperations(Resource):
         req_body = request.get_json()
         try:
             data = CreateMeetingModel(**req_body)
-            meeting_meta_data = MeetingService.create()
+            meeting_meta_data = MeetingService.create(data)
             res_payload = Response(status=201, data=meeting_meta_data)       
             # print(create_meeting_schema.invitees)
              # res = create_zoom_meeting()
