@@ -1,8 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from models.meeting import api as meeting_api, create_meeting_model, CreateMeetingModel
-from repository.meeting import create_meeting
 from integrations.resend import send_email
-from services.zoom import get_access_token, create_meeting as create_zoom_meeting
 from services.meeting import MeetingService
 from integrations.mq.emails import email_queue
 from flask import request

@@ -24,7 +24,7 @@ class ConfigModel(BaseModel):
     epoch: int = Field(description="Epoch of the meeting")
     duration: int = Field(required=True, description="Duration of the meeting")
     topic: str = Field(required=True, description="Topic of the meeting")
-    agenda: str = Field(required="Agenda of the meeting")
+    agenda: str = Field(required=True, description="Agenda of the meeting")
 
 class CreateMeetingModel(BaseModel):
     meetingProvider: str = Field(description='Meeting Provider like Zoom or Google Meet', pattern="^(zoom|gmeet)$")
