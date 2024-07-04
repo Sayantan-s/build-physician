@@ -1,0 +1,39 @@
+name: Development Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: Install dependencies
+        run: |
+          cd api
+          poetry install
+
+    #   - name: Deploy to Render
+    #     env:
+    #       RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+    #     run: |
+    #       curl -X POST \
+    #       -H "Authorization: Bearer $RENDER_API_KEY" \
+    #       -H "Accept: application/json" \
+    #       -H "Content-Type: application/json" \
+    #       -d '{"serviceId": "your-service-id"}' \
+    #       https://api.render.com/v1/services/your-service-id/deploys
