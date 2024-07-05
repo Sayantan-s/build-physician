@@ -5,7 +5,7 @@ from flask_restx import Api
 from apis import meeting_api,auth_api
 from constants.uri import MEETING_ENDPOINT,AUTH_ENDPOINT
 from integrations.mq.emails import email_queue
-from .config import PORT
+from config import PORT
 
 
 app = Flask(__name__)
