@@ -9,7 +9,6 @@ Effortlessly create interactive meeting roadmaps and seamlessly schedule meeting
 &nbsp;<img src="https://cdn.svgporn.com/logos/postgresql.svg" width="48">
 &nbsp;<img src="https://cdn.svgporn.com/logos/redis.svg" width="42">
 &nbsp;<img src="./assets/ngrok.svg" width="64">
-&nbsp;<img src="https://cdn.svgporn.com/logos/postgresql.svg" width="48">
 &nbsp;<img src="https://cdn.svgporn.com/logos/yarn.svg" width="48">
 
 **☁️ Webhook Intercepting**: `ngrok config add-authtoken $YOUR_AUTHTOKEN`
