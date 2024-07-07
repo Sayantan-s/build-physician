@@ -6,6 +6,7 @@ from apis import meeting_api,auth_api
 from constants.uri import MEETING_ENDPOINT,AUTH_ENDPOINT
 from integrations.mq.emails import email_queue
 from config import PORT
+from db import Database
 
 
 app = Flask(__name__)
@@ -17,4 +18,5 @@ api.add_namespace(auth_api, path=AUTH_ENDPOINT)
 
 if __name__ == '__main__':
     app.run(port=port, debug=True, host='localhost')
+    Database.init()
     threading.Thread(target=email_queue.consume).start()
