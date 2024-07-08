@@ -1,6 +1,7 @@
-from peewee import Model
-from db import db
+from peewee import Model,PostgresqlDatabase 
+from config import DB_URI
 
+db = PostgresqlDatabase(DB_URI)
 
 class BaseModel(Model):
     class Meta:

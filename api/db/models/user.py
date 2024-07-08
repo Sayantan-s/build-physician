@@ -1,4 +1,4 @@
-from peewee import CharField,UUIDField, TextField, DateTimeField, ForeignKeyField
+from peewee import CharField,UUIDField, TextField, DateTimeField
 from . import BaseModel
 from datetime import datetime
 import uuid

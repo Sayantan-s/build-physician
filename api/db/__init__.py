@@ -1,7 +1,7 @@
 from db.models.roadmap import Roadmap
 from db.models.meeting import Meeting
 from db.models.user import User
-from .connection import db
+from db.models import db
 
 class Database:
     def init():
