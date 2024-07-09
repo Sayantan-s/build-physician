@@ -32,37 +32,38 @@ class GmeetMeeting:
 
     def create(self):
         creds: Credentials = GmeetMeeting.get_access_token()
-        try:
-            service = build("calendar", "v3", credentials=creds)
+        service = build("calendar", "v3", credentials=creds)
 
-            start = datetime.datetime.utcnow().isoformat() + "Z"
-            now = datetime.datetime.fromisoformat(start[:-1])
-            later = now + datetime.timedelta(minutes=30)
-            end = later.isoformat() + "Z"
-                        
-            event = {
-                "start": {"dateTime": start},
-                "end": {"dateTime": end},
-                "attendees": [{"email": "sssamanta789@gmail.com"}],
-                "conferenceData": {
-                    "createRequest": {
-                        "requestId": "sample123", 
-                        "conferenceSolutionKey": {"type": "hangoutsMeet"}
-                    }
-                },
-                "summary": "Testing < > Summary",
-                "description": "Testing < > Description"
-            }
-            events_result = (
+        epoch_time = self.meeting.config.epoch / 1000
+
+        start_time = datetime.datetime.utcfromtimestamp(epoch_time)
+        end_time = start_time + datetime.timedelta(minutes=self.meeting.config.duration)
+
+        start,end = (start_time.isoformat() + "Z", end_time.isoformat() + "Z")
+
+        attendees = [{ "email": attendee } for attendee in self.meeting.invitees ]
+            
+        event = {
+            "start": {"dateTime": start},
+            "end": {"dateTime": end},
+            "attendees": attendees,
+            "conferenceData": {
+                "createRequest": {
+                    "requestId": "sample123", 
+                    "conferenceSolutionKey": {"type": "hangoutsMeet"}
+                }
+            },
+            "summary": self.meeting.config.topic,
+            "description": self.meeting.config.agenda
+        }
+            
+        events_result = (
                 service.events()
-                .insert(calendarId="primary", sendNotifications=False, body=event, conferenceDataVersion=1)
+                .insert(calendarId="primary", sendNotifications=True, body=event, conferenceDataVersion=1)
                 .execute()
             )
             
-            return events_result
-
-        except HttpError as error:
-            print(f"An error occurred: {error}")
+        return {**events_result, "start_time": start_time, "end_time": end_time}
     
     def add_participant(self):
         print('Zoom participant added')
