@@ -3,7 +3,6 @@ from integrations.meetings.gmeet import GmeetMeeting
 from integrations.meetings.zoom import ZoomMeeting
 from typing import Dict, Union
 from db.models.meeting import Meeting
-
 class MeetingService:
     __meeting_provider_instance: Dict[str, Union[ZoomMeeting, GmeetMeeting]] = {
         "zoom": ZoomMeeting,

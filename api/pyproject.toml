@@ -21,6 +21,7 @@ pydantic = {extras = ["email"], version = "^2.7.4"}
 gunicorn = "^22.0.0"
 peewee = "^3.17.6"
 psycopg2-binary = "^2.9.9"
+firebase-admin = "^6.5.0"
 
 
 [build-system]
