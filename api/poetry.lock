@@ -26,6 +26,17 @@ files = [
 ]
 
 [[package]]
+name = "async-timeout"
+version = "4.0.3"
+description = "Timeout context manager for asyncio programs"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "async-timeout-4.0.3.tar.gz", hash = "sha256:4640d96be84d82d02ed59ea2b7105a0f7b33abe8703703cd0ab0bf87c427522f"},
+    {file = "async_timeout-4.0.3-py3-none-any.whl", hash = "sha256:7405140ff1230c310e51dc27b3145b9092d659ce68ff733fb0cefe3ee42be028"},
+]
+
+[[package]]
 name = "attrs"
 version = "23.2.0"
 description = "Classes Without Boilerplate"
@@ -53,6 +64,17 @@ python-versions = ">=3.8"
 files = [
     {file = "blinker-1.8.2-py3-none-any.whl", hash = "sha256:1779309f71bf239144b9399d06ae925637cf6634cf6bd131104184531bf67c01"},
     {file = "blinker-1.8.2.tar.gz", hash = "sha256:8f77b09d3bf7c795e969e9486f39c2c5e9c39d4ee07424be2bc594ece9642d83"},
+]
+
+[[package]]
+name = "boltons"
+version = "24.0.0"
+description = "When they're not builtins, they're boltons."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "boltons-24.0.0-py3-none-any.whl", hash = "sha256:9618695a6ec4f50412e7072e5d78910a00b4111d0b9b549e4a3d60bc321e7807"},
+    {file = "boltons-24.0.0.tar.gz", hash = "sha256:7153feccaea1ff2e1472f68d4b57fadb796a2ee49d29f638f1c9cd8fb5ebd916"},
 ]
 
 [[package]]
@@ -386,6 +408,21 @@ dnspython = ">=2.0.0"
 idna = ">=2.0.0"
 
 [[package]]
+name = "face"
+version = "20.1.1"
+description = "A command-line application framework (and CLI parser). Friendly for users, full-featured for developers."
+optional = false
+python-versions = "*"
+files = [
+    {file = "face-20.1.1-py2-none-any.whl", hash = "sha256:3790311a7329e4b0d90baee346eecad54b337629576edf3a246683a5f0d24446"},
+    {file = "face-20.1.1-py3-none-any.whl", hash = "sha256:ca3a1d8b8b6aa8e61d62a300e9ee24e09c062aceda549e9a640128e4fa0f4559"},
+    {file = "face-20.1.1.tar.gz", hash = "sha256:7d59ca5ba341316e58cf72c6aff85cca2541cf5056c4af45cb63af9a814bed3e"},
+]
+
+[package.dependencies]
+boltons = ">=20.0.0"
+
+[[package]]
 name = "firebase-admin"
 version = "6.5.0"
 description = "Firebase Admin Python SDK"
@@ -488,6 +525,26 @@ memcached = ["pymemcache"]
 mongodb = ["pymongo (>=4.6.2)"]
 redis = ["redis (>=5.0.3)"]
 sqlalchemy = ["flask-sqlalchemy (>=3.0.5)"]
+
+[[package]]
+name = "glom"
+version = "23.5.0"
+description = "A declarative object transformer and formatter, for conglomerating nested data."
+optional = false
+python-versions = "*"
+files = [
+    {file = "glom-23.5.0-py3-none-any.whl", hash = "sha256:fe4e9be4dc93c11a99f8277042e4bee95419c02cda4b969f504508b0a1aa6a66"},
+    {file = "glom-23.5.0.tar.gz", hash = "sha256:06af5e3486aacc59382ba34e53ebeabd7a9345d78f7dbcbee26f03baa4b83bac"},
+]
+
+[package.dependencies]
+attrs = "*"
+boltons = ">=19.3.0"
+face = "20.1.1"
+
+[package.extras]
+toml = ["tomli"]
+yaml = ["PyYAML"]
 
 [[package]]
 name = "google-api-core"
@@ -1571,6 +1628,24 @@ files = [
 ]
 
 [[package]]
+name = "redis"
+version = "5.0.7"
+description = "Python client for Redis database and key-value store"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "redis-5.0.7-py3-none-any.whl", hash = "sha256:0e479e24da960c690be5d9b96d21f7b918a98c0cf49af3b6fafaa0753f93a0db"},
+    {file = "redis-5.0.7.tar.gz", hash = "sha256:8f611490b93c8109b50adc317b31bfd84fff31def3475b92e7e80bf39f48175b"},
+]
+
+[package.dependencies]
+async-timeout = {version = ">=4.0.3", markers = "python_full_version < \"3.11.3\""}
+
+[package.extras]
+hiredis = ["hiredis (>=1.0.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
+
+[[package]]
 name = "referencing"
 version = "0.35.1"
 description = "JSON Referencing + Python"
@@ -1835,4 +1910,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "4e844adeb61ce3cc05dabb574ae7ff460e6c2822e359959cb05299c305867a9b"
+content-hash = "8a139d446a094e575ea27a6ec49a1de1b98b2cb77c45078250a4d00728e0ffa1"

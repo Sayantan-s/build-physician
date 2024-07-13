@@ -31,6 +31,6 @@ class MeetingService:
             updated_by="5eb0056e-b35b-444c-bbf1-04592188a37f",
             user_id="5eb0056e-b35b-444c-bbf1-04592188a37f"
         )
-        return { "meeting_link": hangoutLink, "gmeet_id": meeting_id, "meeting_id": str(res.id) }
+        return { "meeting_link": hangoutLink, "gmeet_id": meeting_id, "meeting_id": res.id }
 
 

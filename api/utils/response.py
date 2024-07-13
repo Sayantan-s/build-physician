@@ -1,6 +1,7 @@
 import uuid
-from flask import jsonify, request, session
+from flask import request, session
 from firebase_admin import auth
+from glom import glom
 
 
 class Response:
@@ -9,20 +10,20 @@ class Response:
         self.data = data
     
     def success(self):
-        return jsonify({
-            "requestId":uuid.uuid4(),
+        return {
+            "requestId":str(uuid.uuid4()),
             "status": self.status,
             "data": self.data,
             "success": True
-        })
+        }
     
     def error(self):
-        return jsonify({
-            "requestId":uuid.uuid4(),
+        return {
+            "requestId":str(uuid.uuid4()),
             "status": self.status,
             "error": self.data,
             "success": False
-        })
+        }
     
     def before_request():
         if 'Authorization' not in request.headers:
@@ -30,4 +31,12 @@ class Response:
             return response.error(), response.status
         token = request.headers.get('Authorization').split('Bearer ')[1]
         decoded_token = auth.verify_id_token(token)
-        user_details = {key: decoded_token[key] for key in ["name", "picture", "user_id", "email"] if key in decoded_token}
+        user_detail_keys={
+            'name': 'name',
+            'email': 'email',
+            'provider': 'firebase.sign_in_provider',
+            "picture": "picture", 
+            "user_id": "user_id"
+        }
+        user_details = {key: glom(decoded_token, path) for key, path in user_detail_keys.items()}
+        session['user'] = user_details

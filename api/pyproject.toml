@@ -24,6 +24,8 @@ psycopg2-binary = "^2.9.9"
 firebase-admin = "^6.5.0"
 flask-session = "^0.8.0"
 flask-cors = "^4.0.1"
+redis = "^5.0.7"
+glom = "^23.5.0"
 
 
 [build-system]
