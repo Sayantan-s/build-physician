@@ -1,7 +1,7 @@
-import { useAuth } from "./store/auth";
+import { useGoogleLogin } from "./apis/useGoogleLogin";
 
 const App = () => {
-  const { googleLogin } = useAuth();
+  const googleLogin = useGoogleLogin();
 
   return (
     <div>

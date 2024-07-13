@@ -1,8 +1,6 @@
-from flask_restx import Namespace, Resource, fields
+from flask_restx import Resource
 from models.meeting import api as meeting_api, create_meeting_model, CreateMeetingModel
-from integrations.resend import send_email
 from services.meeting import MeetingService
-from integrations.mq.emails import email_queue
 from flask import request
 from pydantic import ValidationError
 from utils.response import Response

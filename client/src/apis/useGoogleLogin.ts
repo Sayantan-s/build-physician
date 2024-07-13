@@ -15,7 +15,8 @@ export const useGoogleLogin = () => {
           new GoogleAuthProvider()
         );
         const token = await res.user.getIdToken();
-        console.log(token);
+        const userDetails = res.user;
+        console.log(userDetails, token);
       },
     });
 };

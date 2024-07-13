@@ -2,19 +2,27 @@ import threading
 
 from flask import Flask
 from flask_restx import Api
-from apis import meeting_api,auth_api
-from constants.uri import MEETING_ENDPOINT,AUTH_ENDPOINT
+from apis import Namespaces
 from integrations.mq.emails import email_queue
+from integrations.firebase import Firebase
 from config import PORT
 from db import Database
+from utils.response import Response
+from flask_cors import CORS
 
 
 app = Flask(__name__)
-api = Api(app, version='1.0', title='My API', description='A simple demonstration API')
+CORS(app)
+Firebase()
+api = Api(app, version='1.0', title='Slotin REST API', description='Logic to schedule meetings and create roadmaps.')
 port = PORT or 8080
 
-api.add_namespace(meeting_api, path=MEETING_ENDPOINT)
-api.add_namespace(auth_api, path=AUTH_ENDPOINT)
+
+@app.before_request
+def before_request():
+    return Response.before_request()
+
+Namespaces(api)
 
 if __name__ == '__main__':
     app.run(port=port, debug=True, host='localhost')
