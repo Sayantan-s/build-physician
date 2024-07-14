@@ -1,4 +1,4 @@
-import { useGoogleLogin } from "./apis/useGoogleLogin";
+import { useGoogleLogin } from "./apis/hooks/auth/useGoogleLogin";
 
 const App = () => {
   const googleLogin = useGoogleLogin();

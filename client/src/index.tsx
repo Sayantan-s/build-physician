@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import { Auth } from "./components/utils/Auth";
 import { NetworkConnection } from "./integrations/network";
 import { Theme } from "./theme";
 
@@ -12,7 +13,9 @@ if (rootEl) {
     <React.StrictMode>
       <NetworkConnection>
         <Theme>
-          <App />
+          <Auth>
+            <App />
+          </Auth>
         </Theme>
       </NetworkConnection>
     </React.StrictMode>

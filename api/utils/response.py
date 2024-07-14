@@ -2,6 +2,7 @@ import uuid
 from flask import request, session
 from firebase_admin import auth
 from glom import glom
+from config import API_KEY
 
 
 class Response:
@@ -26,9 +27,14 @@ class Response:
         }
     
     def before_request():
+        if 'x-api-key' not in request.headers:
+            raise ValueError('Api key is missing!')
+        else:
+            api_key = request.headers.get('x-api-key')
+            if api_key != API_KEY:
+                raise ValueError('Api key is not correct!')
         if 'Authorization' not in request.headers:
-            response = Response(status=401, data="Unauthorized access!")
-            return response.error(), response.status
+            raise ValueError("Unauthorized access!")
         token = request.headers.get('Authorization').split('Bearer ')[1]
         decoded_token = auth.verify_id_token(token)
         user_detail_keys={
