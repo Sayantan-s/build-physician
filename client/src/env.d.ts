@@ -9,6 +9,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_FIREBASE_MEASUREMENT_ID: string;
   readonly PUBLIC_API_URI: string;
   readonly PUBLIC_API_KEY: string;
+  readonly PUBLIC_ENVIRONMENT: NODE_ENV;
 }
 
 interface ImportMeta {

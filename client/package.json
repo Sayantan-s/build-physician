@@ -7,11 +7,15 @@
     "check": "biome check --write",
     "dev": "rsbuild dev",
     "format": "biome format --write",
-    "preview": "rsbuild preview"
+    "preview": "rsbuild preview",
+    "generate-routes": "tsr generate",
+    "watch-routes": "tsr watch"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.50.1",
     "@tanstack/react-query-devtools": "^5.50.1",
+    "@tanstack/react-router": "^1.45.4",
+    "@tanstack/router-devtools": "^1.45.4",
     "axios": "^1.7.2",
     "firebase": "^10.12.3",
     "react": "^18.3.1",
@@ -25,6 +29,8 @@
     "@rsbuild/core": "^0.7.9",
     "@rsbuild/plugin-react": "^0.7.9",
     "@rsbuild/plugin-styled-components": "^0.7.10",
+    "@tanstack/router-cli": "^1.45.2",
+    "@tanstack/router-plugin": "^1.45.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/styled-components": "^5.1.34",

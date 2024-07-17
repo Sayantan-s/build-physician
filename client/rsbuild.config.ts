@@ -1,6 +1,7 @@
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginStyledComponents } from "@rsbuild/plugin-styled-components";
+import { TanStackRouterRspack } from "@tanstack/router-plugin/rspack";
 
 export default defineConfig({
   dev: {
@@ -19,6 +20,11 @@ export default defineConfig({
     open: true,
     host: "localhost",
     port: 3000,
+  },
+  tools: {
+    rspack: {
+      plugins: [TanStackRouterRspack()],
+    },
   },
   html: {
     tags: [
