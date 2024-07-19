@@ -12,7 +12,7 @@ class AuthSignIn(Resource):
     def get(self):
         payload = flask.session.get('user', None)
         if payload is not None:
-            _, created = User.get_or_create(
+            user, created = User.get_or_create(
                     id=payload.get('user_id'),
                     defaults={
                         'name':payload.get('name'),
@@ -22,11 +22,12 @@ class AuthSignIn(Resource):
                         "new_user": True
                     }
                 )
+            payload = json.dumps(user.__dict__['__data__'], cls=CustomJSONEncoder, indent=4)
+            response = Response(status=200, data=json.loads(payload))
             if created:
-                response = Response(status=201, data="User successfully created!")
+                response.status = 201
                 return response.success(), response.status
             else:
-                response = Response(status=200, data="User successfully logged in!")
                 return response.success(), response.status
             
         response = Response(status=400, data="Please try to send correct user!")

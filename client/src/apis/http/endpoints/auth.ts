@@ -1,1 +1,1 @@
-export const SIGNIN = "/auth/user";
+export const SIGNIN = "/auth/signin";

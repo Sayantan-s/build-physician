@@ -27,7 +27,7 @@ class Response:
         }
     
     def before_request():
-        if 'x-api-key' not in request.headers:
+        if 'X-Api-Key' not in request.headers:
             raise ValueError('Api key is missing!')
         else:
             api_key = request.headers.get('x-api-key')

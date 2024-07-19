@@ -1,18 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGoogleLogin } from "../apis/hooks/auth";
+import { useAuth, useAuthState } from "../apis/hooks/auth";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
 
 function Home() {
-  const googleLogin = useGoogleLogin();
+  const { signIn, signOut } = useAuth();
+
+  useAuthState();
 
   return (
     <div>
-      <h1>Rsbuild with React</h1>
-      <p>Start building amazing things with Rsbuild.</p>
-      <button onClick={googleLogin}>Google Login</button>
+      <button onClick={signIn}>Google Login</button>
+      <button onClick={signOut}>SignOut</button>
     </div>
   );
 }

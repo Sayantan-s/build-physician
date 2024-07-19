@@ -3,12 +3,14 @@ from integrations.meetings.gmeet import GmeetMeeting
 from integrations.meetings.zoom import ZoomMeeting
 from typing import Dict, Union
 from db.models.meeting import Meeting
+import flask
 class MeetingService:
     __meeting_provider_instance: Dict[str, Union[ZoomMeeting, GmeetMeeting]] = {
         "zoom": ZoomMeeting,
         "gmeet": GmeetMeeting
     }
     def create(meeting_input: CreateMeetingModel):
+        user = flask.session.get('user', None)
         meeting_construct = MeetingService.__meeting_provider_instance[meeting_input.meetingProvider]
         meeting: Union[ZoomMeeting, GmeetMeeting] = meeting_construct(meeting_input)
         meeting_metadata = meeting.create()
@@ -16,6 +18,7 @@ class MeetingService:
         meeting_end_time = meeting_metadata['end_time']
         hangoutLink= meeting_metadata["hangoutLink"]
         meeting_id = meeting_metadata['id']
+        user_id = user['user_id']
         res = Meeting.create(
             provider = meeting_input.meetingProvider,
             meeting_id = meeting_id,
@@ -27,10 +30,11 @@ class MeetingService:
             meeting_link=hangoutLink,
             meeting_start_time=meeting_start_time,
             meeting_end_time=meeting_end_time,
-            created_by="5eb0056e-b35b-444c-bbf1-04592188a37f",
-            updated_by="5eb0056e-b35b-444c-bbf1-04592188a37f",
-            user_id="5eb0056e-b35b-444c-bbf1-04592188a37f"
+            created_by=user_id,
+            updated_by=user_id,
+            user=user_id
         )
-        return { "meeting_link": hangoutLink, "gmeet_id": meeting_id, "meeting_id": res.id }
+        print(user_id, 'Meeting created!!')
+        return { "meeting_link": hangoutLink, "gmeet_id": meeting_id, "meeting_id": str(res.id) }
 
 
