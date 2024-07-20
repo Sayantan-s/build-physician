@@ -1,31 +1,32 @@
-import { User } from "firebase/auth";
+import { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import Firebase from "../../../integrations/firebase";
-
-const loadUser = () =>
-  new Promise<User | null>((resolve, reject) =>
-    Firebase.auth.onAuthStateChanged((user) =>
-      user ? resolve(user) : reject()
-    )
-  );
+import { useAuthStore } from "../../../store/auth";
+import { getSigninMetaData } from "../../http/endpoints/auth";
 
 export const useAuthState = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { setLogin, setPendingStatus } = useAuthStore();
 
   useEffect(() => {
     setIsLoading(true);
-    const unsubscribe = Firebase.auth.onAuthStateChanged(
-      async (user) => {
-        setIsLoading(false);
-        console.log(user);
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        console.log("compeleted...");
+    const unsubscribe = Firebase.auth.onAuthStateChanged(async (user) => {
+      setPendingStatus(true);
+      try {
+        if (user) {
+          const signInRes = await getSigninMetaData();
+          if (signInRes.status === 200) console.log("Logged in!!");
+          if (signInRes.status === 201) console.log("Signed up!!");
+          setLogin(signInRes.data.data);
+        }
+      } catch (error) {
+        if (isAxiosError(error)) {
+          await Firebase.auth.signOut();
+        }
+      } finally {
+        setPendingStatus(false);
       }
-    );
+    });
     return () => {
       unsubscribe();
     };
