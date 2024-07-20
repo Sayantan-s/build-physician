@@ -4,7 +4,9 @@ import Firebase from "../../integrations/firebase";
 
 export const api = axios.create({
   baseURL: `${import.meta.env.PUBLIC_API_URI}/api/v1`,
-  withCredentials: true,
+  headers: {
+    "X-Api-Key": import.meta.env.PUBLIC_API_KEY,
+  },
 });
 
 api.interceptors.request.use(async function (config) {
@@ -12,6 +14,5 @@ api.interceptors.request.use(async function (config) {
     const token = await getIdToken(Firebase.auth.currentUser);
     config.headers.Authorization = `Bearer ${token}`;
   }
-  config.headers["X-Api-Key"] = import.meta.env.PUBLIC_API_KEY;
   return config;
 });

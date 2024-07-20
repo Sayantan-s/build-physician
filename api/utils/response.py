@@ -3,6 +3,8 @@ from flask import request, session
 from firebase_admin import auth
 from glom import glom
 from config import API_KEY
+from flask import jsonify
+
 
 
 class Response:
@@ -26,7 +28,7 @@ class Response:
             "success": False
         }
     
-    def before_request():
+    def basic_auth():
         if 'X-Api-Key' not in request.headers:
             raise ValueError('Api key is missing!')
         else:
@@ -46,3 +48,11 @@ class Response:
         }
         user_details = {key: glom(decoded_token, path) for key, path in user_detail_keys.items()}
         session['user'] = user_details
+    
+    def before_request():
+        headers = {'Access-Control-Allow-Origin': '*',
+               'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+               'Access-Control-Allow-Headers': 'Authorization, X-API-Key, Content-Type, Access-Control-Allow-Origin'}
+        if request.method.lower() == 'options':
+            return jsonify(headers), 200
+        return Response.basic_auth()

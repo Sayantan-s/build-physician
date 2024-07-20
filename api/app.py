@@ -13,7 +13,8 @@ from integrations.session import Session
 
 
 app = Flask(__name__)
-CORS(app, support_credentials=True, origins=[ORIGIN])
+CORS(app)
+
 Firebase()
 api = Api(app, version='1.0', title='Slotin REST API', description='Logic to schedule meetings and create roadmaps.')
 
