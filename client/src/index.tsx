@@ -9,6 +9,7 @@ const router = createRouter({
   routeTree,
   context: {
     queryClient,
+    auth: undefined!,
   },
   defaultPreload: "intent",
   defaultPreloadStaleTime: 0,

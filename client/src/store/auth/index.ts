@@ -1,18 +1,19 @@
 import { create } from "zustand";
 import { IUser } from "./types";
 
-interface State {
+export interface IAuthState {
   isAuthenticated: boolean;
   user: IUser | null;
   isPending: boolean;
 }
 
-interface Action {
+export interface IAuthAction {
   setLogin: (payload: IUser) => void;
   setPendingStatus: (pendingStatus: boolean) => void;
+  setLogout: () => void;
 }
 
-const useRootState = create<State & Action>((set) => ({
+const useRootState = create<IAuthState & IAuthAction>((set) => ({
   isPending: false,
   isAuthenticated: false,
   user: null,

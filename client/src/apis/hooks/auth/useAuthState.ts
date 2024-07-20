@@ -1,28 +1,28 @@
+import { useNavigate } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Firebase from "../../../integrations/firebase";
 import { useAuthStore } from "../../../store/auth";
 import { getSigninMetaData } from "../../http/endpoints/auth";
+import { useAuth } from "./useGoogleLogin";
 
 export const useAuthState = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const { setLogin, setPendingStatus } = useAuthStore();
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setIsLoading(true);
     const unsubscribe = Firebase.auth.onAuthStateChanged(async (user) => {
       setPendingStatus(true);
       try {
         if (user) {
           const signInRes = await getSigninMetaData();
-          if (signInRes.status === 200) console.log("Logged in!!");
-          if (signInRes.status === 201) console.log("Signed up!!");
           setLogin(signInRes.data.data);
+          navigate({ to: "/dashboard" });
+          if (signInRes.status === 201) console.log("Signed up!!");
         }
       } catch (error) {
-        if (isAxiosError(error)) {
-          await Firebase.auth.signOut();
-        }
+        if (isAxiosError(error)) await signOut();
       } finally {
         setPendingStatus(false);
       }
@@ -31,5 +31,4 @@ export const useAuthState = () => {
       unsubscribe();
     };
   }, []);
-  return { isLoading };
 };

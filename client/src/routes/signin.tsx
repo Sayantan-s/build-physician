@@ -1,9 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useAuth } from "../apis/hooks/auth";
 
 export const Route = createFileRoute("/signin")({
-  component: Login,
+  component: SignIn,
 });
 
-function Login() {
-  return <div>Login</div>;
+function SignIn() {
+  const { signIn } = useAuth();
+
+  return (
+    <div>
+      <button onClick={signIn}>Google Login</button>
+    </div>
+  );
 }
