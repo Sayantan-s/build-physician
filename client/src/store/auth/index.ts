@@ -13,7 +13,7 @@ export interface IAuthAction {
   setLogout: () => void;
 }
 
-const useRootState = create<IAuthState & IAuthAction>((set) => ({
+export const useRootAuthState = create<IAuthState & IAuthAction>((set) => ({
   isPending: false,
   isAuthenticated: false,
   user: null,
@@ -23,4 +23,4 @@ const useRootState = create<IAuthState & IAuthAction>((set) => ({
   setLogout: () => set(() => ({ isAuthenticated: false, user: null })),
 }));
 
-export const useAuthStore = () => useRootState((state) => state);
+export const useAuthStore = () => useRootAuthState((state) => state);

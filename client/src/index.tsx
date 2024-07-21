@@ -1,25 +1,8 @@
-import { createRouter, RouterProvider } from "@tanstack/react-router";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { NetworkConnection, queryClient } from "./integrations/network";
-import { routeTree } from "./routeTree.gen";
+import { App } from "./app";
+import { NetworkConnection } from "./integrations/network";
 import { Theme } from "./theme";
-
-const router = createRouter({
-  routeTree,
-  context: {
-    queryClient,
-    auth: undefined!,
-  },
-  defaultPreload: "intent",
-  defaultPreloadStaleTime: 0,
-});
-
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
 
 const rootEl = document.getElementById("root");
 
@@ -29,7 +12,7 @@ if (rootEl) {
     <React.StrictMode>
       <NetworkConnection>
         <Theme>
-          <RouterProvider router={router} />
+          <App />
         </Theme>
       </NetworkConnection>
     </React.StrictMode>
