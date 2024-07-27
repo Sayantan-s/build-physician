@@ -1,13 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
-import {
-  createRootRouteWithContext,
-  Outlet,
-  redirect,
-} from "@tanstack/react-router";
-import { isAxiosError } from "axios";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import React from "react";
-import { getSigninMetaData } from "../apis/http/endpoints/auth";
-import Firebase from "../integrations/firebase";
+import { useAuthInit } from "../apis/hooks/auth";
 import { useAuthStore } from "../store/auth";
 
 interface RouterContext {
@@ -26,31 +20,16 @@ const TanStackRouterDevtools =
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: Root,
-  beforeLoad: async ({ context }) => {
-    Firebase.auth.onAuthStateChanged(async (user) => {
-      const { setPendingStatus, setLogout, setLogin } = context.auth;
-      setPendingStatus(true);
-      try {
-        if (user) {
-          const signInRes = await getSigninMetaData();
-          setLogin(signInRes.data.data);
-          redirect({ to: "/dashboard" });
-          if (signInRes.status === 201) console.log("Signed up!!");
-        }
-      } catch (error) {
-        if (isAxiosError(error)) {
-          Firebase.auth.signOut();
-          setLogout();
-        }
-      } finally {
-        setPendingStatus(false);
-      }
-    });
-  },
 });
 
 function Root() {
-  return (
+  useAuthInit();
+
+  const { isPending } = useAuthStore();
+
+  return isPending ? (
+    <div>Loading...</div>
+  ) : (
     <>
       <Outlet />
       <TanStackRouterDevtools />

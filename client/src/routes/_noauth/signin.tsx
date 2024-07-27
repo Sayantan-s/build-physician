@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useAuth } from "../apis/hooks/auth";
+import { useAuth } from "../../apis/hooks/auth";
 
-export const Route = createFileRoute("/signin")({
+export const Route = createFileRoute("/_noauth/signin")({
   component: SignIn,
 });
 

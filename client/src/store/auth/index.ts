@@ -14,7 +14,7 @@ export interface IAuthAction {
 }
 
 export const useRootAuthState = create<IAuthState & IAuthAction>((set) => ({
-  isPending: false,
+  isPending: true,
   isAuthenticated: false,
   user: null,
   setPendingStatus: (pendingStatus) =>

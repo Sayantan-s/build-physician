@@ -11,20 +11,26 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SigninImport } from './routes/signin'
+import { Route as NoauthImport } from './routes/_noauth'
 import { Route as AuthImport } from './routes/_auth'
+import { Route as NoauthSigninImport } from './routes/_noauth/signin'
 import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
 
 // Create/Update Routes
 
-const SigninRoute = SigninImport.update({
-  path: '/signin',
+const NoauthRoute = NoauthImport.update({
+  id: '/_noauth',
   getParentRoute: () => rootRoute,
 } as any)
 
 const AuthRoute = AuthImport.update({
   id: '/_auth',
   getParentRoute: () => rootRoute,
+} as any)
+
+const NoauthSigninRoute = NoauthSigninImport.update({
+  path: '/signin',
+  getParentRoute: () => NoauthRoute,
 } as any)
 
 const AuthDashboardRoute = AuthDashboardImport.update({
@@ -43,11 +49,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
-    '/signin': {
-      id: '/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof SigninImport
+    '/_noauth': {
+      id: '/_noauth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof NoauthImport
       parentRoute: typeof rootRoute
     }
     '/_auth/dashboard': {
@@ -57,6 +63,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardImport
       parentRoute: typeof AuthImport
     }
+    '/_noauth/signin': {
+      id: '/_noauth/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof NoauthSigninImport
+      parentRoute: typeof NoauthImport
+    }
   }
 }
 
@@ -64,7 +77,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   AuthRoute: AuthRoute.addChildren({ AuthDashboardRoute }),
-  SigninRoute,
+  NoauthRoute: NoauthRoute.addChildren({ NoauthSigninRoute }),
 })
 
 /* prettier-ignore-end */
@@ -76,7 +89,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/_auth",
-        "/signin"
+        "/_noauth"
       ]
     },
     "/_auth": {
@@ -85,12 +98,19 @@ export const routeTree = rootRoute.addChildren({
         "/_auth/dashboard"
       ]
     },
-    "/signin": {
-      "filePath": "signin.tsx"
+    "/_noauth": {
+      "filePath": "_noauth.tsx",
+      "children": [
+        "/_noauth/signin"
+      ]
     },
     "/_auth/dashboard": {
       "filePath": "_auth/dashboard.tsx",
       "parent": "/_auth"
+    },
+    "/_noauth/signin": {
+      "filePath": "_noauth/signin.tsx",
+      "parent": "/_noauth"
     }
   }
 }
