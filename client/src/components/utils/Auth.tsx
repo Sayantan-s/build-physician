@@ -1,7 +1,11 @@
 import { FC, PropsWithChildren } from "react";
 import { useAuthStore } from "../../store/auth";
+import { authApi } from "../../apis/hooks/auth";
 
 export const Auth: FC<PropsWithChildren> = ({ children }) => {
+  authApi.useAuth();
+
   const { isPending } = useAuthStore();
-  return isPending ? <div>loading...</div> : children;
+
+  return isPending ? <div>Loading...</div> : children;
 };

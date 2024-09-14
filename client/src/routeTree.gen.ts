@@ -10,66 +10,66 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as NoauthImport } from './routes/_noauth'
-import { Route as AuthImport } from './routes/_auth'
-import { Route as NoauthSigninImport } from './routes/_noauth/signin'
-import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as NoauthImport } from "./routes/_noauth";
+import { Route as AuthImport } from "./routes/_auth";
+import { Route as NoauthSigninImport } from "./routes/_noauth/signin";
+import { Route as AuthDashboardImport } from "./routes/_auth/dashboard";
 
 // Create/Update Routes
 
 const NoauthRoute = NoauthImport.update({
-  id: '/_noauth',
+  id: "/_noauth",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AuthRoute = AuthImport.update({
-  id: '/_auth',
+  id: "/_auth",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const NoauthSigninRoute = NoauthSigninImport.update({
-  path: '/signin',
+  path: "/signin",
   getParentRoute: () => NoauthRoute,
-} as any)
+} as any);
 
 const AuthDashboardRoute = AuthDashboardImport.update({
-  path: '/dashboard',
+  path: "/dashboard",
   getParentRoute: () => AuthRoute,
-} as any)
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
-    }
-    '/_noauth': {
-      id: '/_noauth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof NoauthImport
-      parentRoute: typeof rootRoute
-    }
-    '/_auth/dashboard': {
-      id: '/_auth/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthDashboardImport
-      parentRoute: typeof AuthImport
-    }
-    '/_noauth/signin': {
-      id: '/_noauth/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof NoauthSigninImport
-      parentRoute: typeof NoauthImport
-    }
+    "/_auth": {
+      id: "/_auth";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_noauth": {
+      id: "/_noauth";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof NoauthImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_auth/dashboard": {
+      id: "/_auth/dashboard";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof AuthDashboardImport;
+      parentRoute: typeof AuthImport;
+    };
+    "/_noauth/signin": {
+      id: "/_noauth/signin";
+      path: "/signin";
+      fullPath: "/signin";
+      preLoaderRoute: typeof NoauthSigninImport;
+      parentRoute: typeof NoauthImport;
+    };
   }
 }
 
@@ -78,7 +78,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   AuthRoute: AuthRoute.addChildren({ AuthDashboardRoute }),
   NoauthRoute: NoauthRoute.addChildren({ NoauthSigninRoute }),
-})
+});
 
 /* prettier-ignore-end */
 

@@ -1,2 +1,1 @@
-export * from "./useAuthState";
-export * from "./useGoogleLogin";
+export * from "./useAuth";
