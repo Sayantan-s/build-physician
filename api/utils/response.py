@@ -28,6 +28,7 @@ class Response:
             "success": False
         }
     
+    @staticmethod
     def basic_auth():
         if 'X-Api-Key' not in request.headers:
             raise ValueError('Api key is missing!')
@@ -49,6 +50,7 @@ class Response:
         user_details = {key: glom(decoded_token, path) for key, path in user_detail_keys.items()}
         session['user'] = user_details
     
+    @staticmethod
     def before_request():
         headers = {'Access-Control-Allow-Origin': '*',
                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',

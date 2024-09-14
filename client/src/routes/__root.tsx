@@ -1,8 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-import React from "react";
-import { useAuthInit } from "../apis/hooks/auth";
+import React, { Suspense } from "react";
 import { useAuthStore } from "../store/auth";
+import { Auth } from "../components/utils/Auth";
 
 interface RouterContext {
   auth: ReturnType<typeof useAuthStore>;
@@ -23,16 +23,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function Root() {
-  useAuthInit();
-
-  const { isPending } = useAuthStore();
-
-  return isPending ? (
-    <div>Loading...</div>
-  ) : (
-    <>
+  return (
+    <Auth>
       <Outlet />
-      <TanStackRouterDevtools />
-    </>
+      <Suspense>
+        <TanStackRouterDevtools />
+      </Suspense>
+    </Auth>
   );
 }
