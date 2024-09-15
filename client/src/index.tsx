@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./app";
-import { NetworkConnection } from "./integrations/network";
-import { Theme } from "./theme";
+import { NetworkConnection } from "@integrations/network";
+import { Theme } from "@theme";
 
 const rootEl = document.getElementById("root");
 

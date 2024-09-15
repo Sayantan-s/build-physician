@@ -1,5 +1,5 @@
 import { api, IResponse } from "..";
-import { IUser } from "../../../store/auth/types";
+import { IUser } from "@store/auth/types";
 
 const SIGNIN = "/auth/signin";
 

@@ -1,10 +1,16 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import {
+  useLocation,
+  useNavigate,
+  useRouteContext,
+  useRouter,
+  useRouterState,
+} from "@tanstack/react-router";
 import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
-import Firebase from "../../../integrations/firebase";
-import { useAuthStore, useRootAuthState } from "../../../store/auth";
-import { getSigninMetaData } from "../../http/endpoints/auth";
-import { useEffect } from "react";
+import Firebase from "@integrations/firebase";
+import { useAuthStore } from "@store/auth";
+import { getSigninMetaData } from "@apis/http/endpoints/auth";
+import { useEffect, useRef } from "react";
 
 export const GOOGLE_LOGIN = "GOOGLE_LOGIN_Q_KEY" as const;
 export const SIGN_OUT = "SIGN_OUT_Q_KEY" as const;
@@ -50,9 +56,11 @@ const useSignOut = () => {
 };
 
 const useAuthorize = () => {
-  const router = useRouter();
   const { setLogin, isPending, setPendingStatus } = useAuthStore();
   const { mutate: signOut } = useSignOut();
+  const navigate = useNavigate();
+  const router = useRouter();
+  const location = useLocation();
 
   return useMutation({
     mutationKey: [AUTHORIZE],
@@ -64,7 +72,10 @@ const useAuthorize = () => {
     onError: async () => await signOut(),
     onSuccess: async (res) => {
       setLogin(res.data.data);
-      router.navigate({ to: "/dashboard" });
+      const routeMetaData = router.routesByPath[location.pathname];
+      const exactRoutePath = routeMetaData.id as string;
+      const isAuthenticatedRoute = /^\/_auth\//.test(exactRoutePath);
+      !isAuthenticatedRoute && (await navigate({ to: "/dashboard" }));
       if (res.status === 201) console.log("Signed up!!");
     },
     onSettled: async () => {
@@ -90,11 +101,15 @@ const useAuthStateChange = () => {
 
 const useAuth = () => {
   const { mutate: firebaseAuth, data: unsubscribe } = useAuthStateChange();
+  const authRef = useRef({ isCalled: false });
 
   useEffect(() => {
-    firebaseAuth();
+    if (!authRef.current.isCalled) {
+      firebaseAuth();
+      authRef.current.isCalled = true;
+    }
     return () => {
-      unsubscribe?.();
+      authRef.current.isCalled && unsubscribe?.();
     };
   }, []);
 };

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { IUser } from "./types";
+import { immer } from "zustand/middleware/immer";
 
 export interface IAuthState {
   isAuthenticated: boolean;
@@ -13,14 +14,26 @@ export interface IAuthAction {
   setLogout: () => void;
 }
 
-export const useRootAuthState = create<IAuthState & IAuthAction>((set) => ({
-  isPending: true,
-  isAuthenticated: false,
-  user: null,
-  setPendingStatus: (pendingStatus) =>
-    set(() => ({ isPending: pendingStatus })),
-  setLogin: (user: IUser) => set(() => ({ isAuthenticated: true, user })),
-  setLogout: () => set(() => ({ isAuthenticated: false, user: null })),
-}));
+export const useRootAuthState = create<IAuthState & IAuthAction>()(
+  immer((set) => ({
+    isPending: true,
+    isAuthenticated: false,
+    user: null,
+    setPendingStatus: (pendingStatus) =>
+      set((state) => {
+        state.isPending = pendingStatus;
+      }),
+    setLogin: (user: IUser) =>
+      set((state) => {
+        state.isAuthenticated = true;
+        state.user = user;
+      }),
+    setLogout: () =>
+      set((state) => {
+        state.isAuthenticated = false;
+        state.user = null;
+      }),
+  }))
+);
 
 export const useAuthStore = () => useRootAuthState((state) => state);

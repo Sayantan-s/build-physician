@@ -1,6 +1,7 @@
 import { ReactFlow, Controls, Background } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useBuilderToolStore } from "../../../../store/buildertool";
+import { useBuilderToolStore } from "@store/buildertool";
+import { NODE_TYPES } from "@store/buildertool/nodes";
 
 export const RoadMapBuilder = () => {
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
@@ -11,6 +12,7 @@ export const RoadMapBuilder = () => {
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        nodeTypes={NODE_TYPES}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}

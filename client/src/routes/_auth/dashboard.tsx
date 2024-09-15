@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { authApi } from "../../apis/hooks/auth";
-import { RoadMapBuilder } from "../../components/RoadMapBuilder";
+import { authApi } from "@apis/hooks/auth";
+import { RoadMapBuilder } from "@components/stories/organisms/RoadmapBuilder";
 
 export const Route = createFileRoute("/_auth/dashboard")({
   component: Dashboard,
