@@ -6,7 +6,14 @@ import {
   useRouter,
   useRouterState,
 } from "@tanstack/react-router";
-import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  User,
+  browserSessionPersistence,
+  onAuthStateChanged,
+  setPersistence,
+  signInWithPopup,
+} from "firebase/auth";
 import Firebase from "@integrations/firebase";
 import { useAuthStore } from "@store/auth";
 import { getSigninMetaData } from "@apis/http/endpoints/auth";
@@ -23,6 +30,7 @@ const useSignIn = () => {
   return useMutation({
     mutationKey: [GOOGLE_LOGIN],
     mutationFn: async () => {
+      await setPersistence(Firebase.auth, browserSessionPersistence);
       await signInWithPopup(Firebase.auth, new GoogleAuthProvider());
     },
     onError: async () => await signOut(),
@@ -66,14 +74,19 @@ const useAuthorize = () => {
     mutationKey: [AUTHORIZE],
     mutationFn: async (user: User | null) => {
       setPendingStatus(true);
+      console.log("Logger:: firebaseAuthStateChange 3", user);
       if (user) return await getSigninMetaData();
       else throw "User not found!";
     },
-    onError: async () => await signOut(),
+    onError: async (err) => {
+      console.log("Logger:: Error", err);
+      await signOut();
+    },
     onSuccess: async (res) => {
       setLogin(res.data.data);
       const routeMetaData = router.routesByPath[location.pathname];
       const exactRoutePath = routeMetaData.id as string;
+      console.log("Logger:: exactRoutePath", exactRoutePath);
       const isAuthenticatedRoute = /^\/_auth\//.test(exactRoutePath);
       !isAuthenticatedRoute && (await navigate({ to: "/dashboard" }));
       if (res.status === 201) console.log("Signed up!!");
@@ -90,8 +103,9 @@ const useAuthStateChange = () => {
   return useMutation({
     mutationKey: [FIREAUTH],
     mutationFn: async () => {
-      return Firebase.auth.onAuthStateChanged(async (user) => {
-        console.log(user, "USER");
+      return onAuthStateChanged(Firebase.auth, async (user) => {
+        console.log("Logger:: USER", user);
+        console.log("Logger:: firebaseAuthStateChange 2");
         setPendingStatus(true);
         await authorize(user);
       });
@@ -105,6 +119,7 @@ const useAuth = () => {
 
   useEffect(() => {
     if (!authRef.current.isCalled) {
+      console.log("Logger:: firebaseAuthStateChange");
       firebaseAuth();
       authRef.current.isCalled = true;
     }

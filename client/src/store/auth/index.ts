@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import { IUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 
@@ -15,25 +16,27 @@ export interface IAuthAction {
 }
 
 export const useRootAuthState = create<IAuthState & IAuthAction>()(
-  immer((set) => ({
-    isPending: true,
-    isAuthenticated: false,
-    user: null,
-    setPendingStatus: (pendingStatus) =>
-      set((state) => {
-        state.isPending = pendingStatus;
-      }),
-    setLogin: (user: IUser) =>
-      set((state) => {
-        state.isAuthenticated = true;
-        state.user = user;
-      }),
-    setLogout: () =>
-      set((state) => {
-        state.isAuthenticated = false;
-        state.user = null;
-      }),
-  }))
+  devtools(
+    immer((set) => ({
+      isPending: true,
+      isAuthenticated: false,
+      user: null,
+      setPendingStatus: (pendingStatus) =>
+        set((state) => {
+          state.isPending = pendingStatus;
+        }),
+      setLogin: (user: IUser) =>
+        set((state) => {
+          state.isAuthenticated = true;
+          state.user = user;
+        }),
+      setLogout: () =>
+        set((state) => {
+          state.isAuthenticated = false;
+          state.user = null;
+        }),
+    }))
+  )
 );
 
 export const useAuthStore = () => useRootAuthState((state) => state);

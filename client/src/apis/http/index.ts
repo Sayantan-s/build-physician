@@ -17,7 +17,6 @@ export const api = axios.create({
 
 api.interceptors.request.use(async function (config) {
   const user = Firebase.auth.currentUser;
-  console.log(user);
   if (user) {
     const token = await getIdToken(user);
     config.headers.Authorization = `Bearer ${token}`;
