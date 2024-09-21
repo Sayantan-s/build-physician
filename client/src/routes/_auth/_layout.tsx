@@ -1,12 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { authApi } from "@apis/hooks/auth";
-import { RoadMapBuilder } from "@components/stories/organisms/RoadmapBuilder";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_auth/dashboard")({
-  component: Dashboard,
+export const Route = createFileRoute("/_auth/_layout")({
+  component: AuthLayout,
 });
 
-function Dashboard() {
+function AuthLayout() {
   const { mutate: signOut, isPending } = authApi.useSignOut();
 
   const handleSignOut = async () => await signOut();
@@ -16,7 +15,7 @@ function Dashboard() {
       <button onClick={handleSignOut} disabled={isPending}>
         {isPending ? "loading..." : "Sign out"}
       </button>
-      <RoadMapBuilder />
+      <Outlet />
     </div>
   );
 }
