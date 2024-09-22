@@ -12,6 +12,7 @@ import Firebase from "@integrations/firebase";
 import { useAuthStore } from "@store/auth";
 import { getSigninMetaData } from "@apis/http/endpoints/auth";
 import { useEffect, useRef } from "react";
+import { isAxiosError } from "axios";
 
 export const GOOGLE_LOGIN = "GOOGLE_LOGIN_Q_KEY" as const;
 export const SIGN_OUT = "SIGN_OUT_Q_KEY" as const;
@@ -71,11 +72,12 @@ const useAuthorize = () => {
       if (user) return await getSigninMetaData();
       else throw "User not found!";
     },
+    retry: (failureCount, error) =>
+      isAxiosError(error) && error.status === 500 && failureCount < 2,
     onError: async () => await signOut(),
     onSuccess: async (res) => {
       setLogin(res.data.data);
       const matchedRoute = router.matchRoutes(location).pop(); // Get the closest matched route
-      console.log(matchedRoute);
       if (matchedRoute) {
         const exactRoutePath: string | undefined = matchedRoute.id; // Get the route schema id
         const isAuthenticatedValidRoute =

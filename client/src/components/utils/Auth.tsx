@@ -5,8 +5,6 @@ import { authApi } from "@apis/hooks/auth";
 export const Auth: FC<PropsWithChildren> = ({ children }) => {
   authApi.useAuth();
 
-  console.log("Render <Auth />");
-
   const { isPending } = useAuthStore();
 
   return isPending ? <div>Loading...</div> : children;

@@ -1,5 +1,5 @@
 from flask_restx import Namespace, fields
-from pydantic import BaseModel, Field, EmailStr, validators
+from pydantic import BaseModel, Field, EmailStr
 from typing import List
 
 # Create Meeting Api Request Schema
