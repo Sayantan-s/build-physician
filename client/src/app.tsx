@@ -1,7 +1,11 @@
-import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { queryClient } from "./integrations/network";
+import {
+  createRouteMask,
+  createRouter,
+  RouterProvider,
+} from "@tanstack/react-router";
+import { queryClient } from "@integrations/network";
 import { routeTree } from "./routeTree.gen";
-import { useAuthStore } from "./store/auth";
+import { useAuthStore } from "@store/auth";
 
 const router = createRouter({
   routeTree,

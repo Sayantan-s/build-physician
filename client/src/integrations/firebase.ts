@@ -13,5 +13,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export default class Firebase {
   public static app = app;
-  public static auth = getAuth();
+  public static auth = getAuth(app);
 }

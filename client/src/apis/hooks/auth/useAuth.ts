@@ -1,10 +1,18 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
-import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
-import Firebase from "../../../integrations/firebase";
-import { useAuthStore, useRootAuthState } from "../../../store/auth";
-import { getSigninMetaData } from "../../http/endpoints/auth";
-import { useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useLocation, useNavigate, useRouter } from "@tanstack/react-router";
+import {
+  GoogleAuthProvider,
+  User,
+  browserSessionPersistence,
+  onAuthStateChanged,
+  setPersistence,
+  signInWithPopup,
+} from "firebase/auth";
+import Firebase from "@integrations/firebase";
+import { useAuthStore } from "@store/auth";
+import { getSigninMetaData } from "@apis/http/endpoints/auth";
+import { useEffect, useRef } from "react";
+import { isAxiosError } from "axios";
 
 export const GOOGLE_LOGIN = "GOOGLE_LOGIN_Q_KEY" as const;
 export const SIGN_OUT = "SIGN_OUT_Q_KEY" as const;
@@ -17,6 +25,7 @@ const useSignIn = () => {
   return useMutation({
     mutationKey: [GOOGLE_LOGIN],
     mutationFn: async () => {
+      await setPersistence(Firebase.auth, browserSessionPersistence);
       await signInWithPopup(Firebase.auth, new GoogleAuthProvider());
     },
     onError: async () => await signOut(),
@@ -50,9 +59,11 @@ const useSignOut = () => {
 };
 
 const useAuthorize = () => {
-  const router = useRouter();
   const { setLogin, isPending, setPendingStatus } = useAuthStore();
   const { mutate: signOut } = useSignOut();
+  const navigate = useNavigate();
+  const router = useRouter();
+  const location = useLocation();
 
   return useMutation({
     mutationKey: [AUTHORIZE],
@@ -61,11 +72,19 @@ const useAuthorize = () => {
       if (user) return await getSigninMetaData();
       else throw "User not found!";
     },
+    retry: (failureCount, error) =>
+      isAxiosError(error) && error.status === 500 && failureCount < 2,
     onError: async () => await signOut(),
     onSuccess: async (res) => {
       setLogin(res.data.data);
-      router.navigate({ to: "/dashboard" });
-      if (res.status === 201) console.log("Signed up!!");
+      const matchedRoute = router.matchRoutes(location).pop(); // Get the closest matched route
+      if (matchedRoute) {
+        const exactRoutePath: string | undefined = matchedRoute.id; // Get the route schema id
+        const isAuthenticatedValidRoute =
+          exactRoutePath && /^\/_auth\//.test(exactRoutePath);
+        !isAuthenticatedValidRoute && (await navigate({ to: "/dashboard" }));
+        if (res.status === 201) console.log("Signed up!!");
+      }
     },
     onSettled: async () => {
       if (isPending) setPendingStatus(false);
@@ -79,8 +98,7 @@ const useAuthStateChange = () => {
   return useMutation({
     mutationKey: [FIREAUTH],
     mutationFn: async () => {
-      return Firebase.auth.onAuthStateChanged(async (user) => {
-        console.log(user, "USER");
+      return onAuthStateChanged(Firebase.auth, async (user) => {
         setPendingStatus(true);
         await authorize(user);
       });
@@ -90,11 +108,15 @@ const useAuthStateChange = () => {
 
 const useAuth = () => {
   const { mutate: firebaseAuth, data: unsubscribe } = useAuthStateChange();
+  const authRef = useRef({ isCalled: false });
 
   useEffect(() => {
-    firebaseAuth();
+    if (!authRef.current.isCalled) {
+      firebaseAuth();
+      authRef.current.isCalled = true;
+    }
     return () => {
-      unsubscribe?.();
+      authRef.current.isCalled && unsubscribe?.();
     };
   }, []);
 };

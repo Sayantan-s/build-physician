@@ -2,10 +2,19 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginStyledComponents } from "@rsbuild/plugin-styled-components";
 import { TanStackRouterRspack } from "@tanstack/router-plugin/rspack";
-
 export default defineConfig({
   dev: {
     assetPrefix: true,
+  },
+  source: {
+    alias: {
+      "@components": "./src/components",
+      "@store": "./src/store",
+      "@routes": "./src/routes",
+      "@theme": "./src/theme",
+      "@apis": "./src/apis",
+      "@integrations": "./src/integrations",
+    },
   },
   plugins: [
     pluginReact(),
@@ -23,7 +32,11 @@ export default defineConfig({
   },
   tools: {
     rspack: {
-      plugins: [TanStackRouterRspack()],
+      plugins: [
+        import.meta.env.PUBLIC_ENVIRONMENT === "development"
+          ? TanStackRouterRspack()
+          : null,
+      ],
     },
   },
   html: {

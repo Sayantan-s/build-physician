@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getIdToken } from "firebase/auth";
-import Firebase from "../../integrations/firebase";
+import Firebase from "@integrations/firebase";
 
 export interface IResponse<TData> {
   requestId: string;
@@ -16,8 +16,9 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(async function (config) {
-  if (Firebase.auth.currentUser) {
-    const token = await getIdToken(Firebase.auth.currentUser);
+  const user = Firebase.auth.currentUser;
+  if (user) {
+    const token = await getIdToken(user);
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

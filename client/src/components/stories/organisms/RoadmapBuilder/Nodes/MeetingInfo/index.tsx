@@ -1,14 +1,17 @@
-import { Handle, NodeProps, Position, useNodesData } from "@xyflow/react";
+import { Handle, NodeProps, Position } from "@xyflow/react";
 import React, { FC } from "react";
 import { IMeetingNodeInfo, TMeetingInfoNode } from "./types";
 import { useForm } from "@tanstack/react-form";
 import { MeetingRoadmapNode } from "./styles";
+import { useBuilderToolStore } from "@store/buildertool";
 
 export const MeetingInfo: FC<NodeProps<TMeetingInfoNode>> = ({ data, id }) => {
+  const { onNodeDataChange } = useBuilderToolStore();
+
   const form = useForm<IMeetingNodeInfo>({
     defaultValues: data,
     onSubmit: async ({ value }) => {
-      console.log(value);
+      onNodeDataChange(id, value);
       form.reset();
     },
   });
@@ -46,10 +49,12 @@ export const MeetingInfo: FC<NodeProps<TMeetingInfoNode>> = ({ data, id }) => {
               />
             )}
           />
-          <button type="submit">Submit</button>
+          <button type="submit">Save</button>
         </form>
       </MeetingRoadmapNode>
       <Handle type="source" position={Position.Bottom} id="a" />
     </React.Fragment>
   );
 };
+
+MeetingInfo.displayName = "meetingInfo";

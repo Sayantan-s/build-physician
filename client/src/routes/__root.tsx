@@ -1,8 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import React, { Suspense } from "react";
-import { useAuthStore } from "../store/auth";
-import { Auth } from "../components/utils/Auth";
+import { useAuthStore } from "@store/auth";
+import { Auth } from "@components/utils/Auth";
 
 interface RouterContext {
   auth: ReturnType<typeof useAuthStore>;
