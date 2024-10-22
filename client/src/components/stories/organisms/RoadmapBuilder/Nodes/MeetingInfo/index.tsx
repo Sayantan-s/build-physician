@@ -1,7 +1,7 @@
 import { Handle, NodeProps, Position } from "@xyflow/react";
-import React, { FC } from "react";
+import React, { FC, FormEventHandler } from "react";
 import { IMeetingNodeInfo, TMeetingInfoNode } from "./types";
-import { useForm } from "@tanstack/react-form";
+import { FieldApi, useForm } from "@tanstack/react-form";
 import { MeetingRoadmapNode } from "./styles";
 import { useBuilderToolStore } from "@store/buildertool";
 
@@ -16,17 +16,24 @@ export const MeetingInfo: FC<NodeProps<TMeetingInfoNode>> = ({ data, id }) => {
     },
   });
 
+  const handleChange = (
+    field: FieldApi<IMeetingNodeInfo, any, undefined, undefined, string>
+  ) => {
+    return (e: React.ChangeEvent<HTMLInputElement>) =>
+      field.handleChange(e.target.value);
+  };
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    form.handleSubmit();
+  };
+
   return (
     <React.Fragment>
       <Handle type="target" position={Position.Top} />
       <MeetingRoadmapNode>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            form.handleSubmit();
-          }}
-        >
+        <form onSubmit={handleSubmit}>
           <form.Field
             name="meetingName"
             children={(field) => (
@@ -34,7 +41,7 @@ export const MeetingInfo: FC<NodeProps<TMeetingInfoNode>> = ({ data, id }) => {
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onChange={handleChange(field)}
               />
             )}
           />
@@ -45,7 +52,7 @@ export const MeetingInfo: FC<NodeProps<TMeetingInfoNode>> = ({ data, id }) => {
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onChange={handleChange(field)}
               />
             )}
           />

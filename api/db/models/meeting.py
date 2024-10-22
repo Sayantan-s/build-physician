@@ -1,4 +1,4 @@
-from peewee import CharField,UUIDField, TextField, DateTimeField, ForeignKeyField, IntegerField
+from peewee import CharField, UUIDField, TextField, DateTimeField, ForeignKeyField, IntegerField
 from playhouse.postgres_ext import ArrayField
 from . import BaseModel
 from datetime import datetime
@@ -9,7 +9,7 @@ import uuid
 
 class Meeting(BaseModel):
     id = UUIDField(primary_key=True, default=uuid.uuid4)
-    
+
     provider = CharField(column_name='provider')
     meeting_id = TextField(column_name='meeting_id')
     topic = TextField(column_name='topic')
@@ -29,5 +29,6 @@ class Meeting(BaseModel):
 
     user = ForeignKeyField(User, backref='roadmaps', on_delete='CASCADE')
     roadmap = ForeignKeyField(Roadmap, backref='meetings', null=True, on_delete='CASCADE')
+
     class Meta:
         table_name = "meeting_dtl"
