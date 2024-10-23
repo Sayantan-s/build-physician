@@ -1,7 +1,8 @@
-import { ReactFlow, Controls, Background } from "@xyflow/react";
+import { ReactFlow, Controls, Background, ControlButton } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useBuilderToolStore } from "@store/buildertool";
 import { NODE_TYPES } from "@store/buildertool/nodes";
+import { RoadMapControls } from "./Controls/RoadMapControls";
 
 export const RoadMapBuilder = () => {
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect } =
@@ -20,7 +21,7 @@ export const RoadMapBuilder = () => {
         proOptions={{ hideAttribution: true }}
       >
         <Background />
-        <Controls />
+        <RoadMapControls />
       </ReactFlow>
     </div>
   );

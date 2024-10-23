@@ -27,7 +27,7 @@ function Root() {
     <Auth>
       <Outlet />
       <Suspense>
-        <TanStackRouterDevtools />
+        <TanStackRouterDevtools position="top-right" />
       </Suspense>
     </Auth>
   );

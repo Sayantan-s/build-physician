@@ -2,7 +2,15 @@ import {
   IMeetingNodeInfo,
   TMeetingInfoNode,
 } from "@components/stories/organisms/RoadmapBuilder/Nodes/MeetingInfo/types";
-import { Edge, OnNodesChange, OnEdgesChange, OnConnect } from "@xyflow/react";
+import {
+  Edge,
+  OnNodesChange,
+  OnEdgesChange,
+  OnConnect,
+  XYPosition,
+  ReactFlowInstance,
+  Node,
+} from "@xyflow/react";
 
 export type BuilderToolNode = TMeetingInfoNode;
 export interface BuilderToolState {
@@ -18,4 +26,5 @@ export interface BuilderToolAction {
   onConnect: OnConnect;
   setNodes: (nodes: BuilderToolNode[]) => void;
   setEdges: (edges: Edge[]) => void;
+  addNewNode: (reactFlowInstance: ReactFlowInstance<Node, Edge>) => void;
 }

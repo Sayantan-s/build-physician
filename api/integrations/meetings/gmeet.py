@@ -16,6 +16,7 @@ class GmeetMeeting:
         if meeting is not None:
             self.meeting = meeting
 
+    @staticmethod
     def get_access_token():
         creds = None
         if os.path.exists('token.json'):

@@ -2,32 +2,44 @@ import { MeetingInfo } from "@components/stories/organisms/RoadmapBuilder/Nodes/
 import { BuilderToolNode } from "./types";
 import { v4 as uuid } from "uuid";
 import { FC } from "react";
+import { Edge, Node, ReactFlowInstance, XYPosition } from "@xyflow/react";
 
-const nodeIdCreator = <T>(node: FC<T>) => `${uuid()}__${node.displayName}`;
+export class NodeController {
+  static nodeIdCreator = <T>(node: FC<T>) => `${uuid()}__${node.displayName}`;
+  static getRandomNodePosition(
+    reactFlowInstance: ReactFlowInstance<Node, Edge>
+  ): XYPosition {
+    const {
+      x: viewportX,
+      y: viewportY,
+      zoom,
+    } = reactFlowInstance.getViewport();
+
+    const padding = 100; // To ensure the node is not too close to the edge of the viewport
+    const viewportWidth = window.innerWidth - padding;
+    const viewportHeight = window.innerHeight - padding;
+
+    // Generate random position within the visible viewport
+    const randomX = Math.random() * viewportWidth;
+    const randomY = Math.random() * viewportHeight;
+
+    // Adjust for pan and zoom
+    const position = {
+      x: (randomX - viewportX) / zoom,
+      y: (randomY - viewportY) / zoom,
+    };
+
+    return position;
+  }
+}
 
 export const [NODE_1_ID, NODE_2_ID] = [
-  nodeIdCreator(MeetingInfo),
-  nodeIdCreator(MeetingInfo),
+  MeetingInfo.createNodeId(),
+  MeetingInfo.createNodeId(),
 ];
 
-export const INITIAL_NODES: BuilderToolNode[] = [
-  {
-    id: NODE_1_ID,
-    type: MeetingInfo.displayName,
-    data: { meetingName: "", meetingDescription: "" },
-    position: { x: 250, y: 250 },
-  },
-  {
-    id: NODE_2_ID,
-    type: MeetingInfo.displayName,
-    data: { meetingName: "", meetingDescription: "" },
-    position: { x: 0, y: 350 },
-  },
-];
+export const INITIAL_NODES: BuilderToolNode[] = [];
 
-export const NODE_INDEXES = {
-  [NODE_1_ID]: 0,
-  [NODE_2_ID]: 1,
-};
+export const NODE_INDEXES: Record<string, number> = {};
 
 export const NODE_TYPES = { [MeetingInfo.displayName!]: MeetingInfo };
