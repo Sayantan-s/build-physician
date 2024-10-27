@@ -12,6 +12,7 @@ class MeetingService:
         "gmeet": GmeetMeeting
     }
 
+    @staticmethod
     def create(meeting_input: CreateMeetingModel):
         user = flask.session.get('user', None)
         meeting_construct = MeetingService.__meeting_provider_instance[meeting_input.meetingProvider]

@@ -5,7 +5,7 @@ from flask_restx import Api
 from apis import Namespaces
 from integrations.mq.emails import email_queue
 from integrations.firebase import Firebase
-from config import PORT,ORIGIN
+from config import PORT
 from db import Database
 from utils.response import Response
 from flask_cors import CORS
