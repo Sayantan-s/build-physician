@@ -16,7 +16,7 @@ interface ICreateRoadmap {
 
 function Roadmaps() {
   const [isOpen, { on, off }] = useSwitch();
-  const { mutate, isPending } = roadmapApi.useCreateRoadmap();
+  const { mutate, isPending } = roadmapApi.useCreateRoadmap({ redirect: true });
 
   const form = useForm<ICreateRoadmap>({
     defaultValues: { name: "", description: "" },
