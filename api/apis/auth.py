@@ -23,8 +23,8 @@ class AuthSignIn(Resource):
                     "new_user": True
                 }
             )
-            payload = json.dumps(user.__dict__['__data__'], cls=CustomJSONEncoder, indent=4)
-            response = Response(status=200, data=json.loads(payload))
+            # payload = json.dumps(user.__dict__['__data__'], cls=CustomJSONEncoder, indent=4)
+            response = Response(status=200, data=user.__dict__['__data__'])
             if created:
                 response.status = 201
                 return response.success(), response.status
@@ -41,7 +41,7 @@ class AuthUser(Resource):
         payload = flask.session.get('user', None)
         if payload is not None:
             user = User.get_by_id(payload.get('user_id'))
-            payload = json.dumps(user.__dict__['__data__'], cls=CustomJSONEncoder, indent=4)
-            response = Response(status=200, data=json.loads(payload))
+            # payload = json.dumps(user.__dict__['__data__'], cls=CustomJSONEncoder, indent=4)
+            response = Response(status=200, data=user.__dict__['__data__'])
             return response.success(), response.status
         raise ValueError('Please send correct user')

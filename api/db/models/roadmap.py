@@ -23,7 +23,7 @@ class Roadmap(BaseModel):
     created_by = CharField(default='system', column_name='created_by')
     updated_by = CharField(default='system', column_name='updated_by')
 
-    user = ForeignKeyField(User, backref='roadmaps', on_delete='CASCADE')
+    user = ForeignKeyField(User, backref='roadmaps', on_delete='CASCADE', column_name='user_id')
 
     class Meta:
         table_name = "roadmap_dtl"

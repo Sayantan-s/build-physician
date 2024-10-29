@@ -76,7 +76,7 @@ const useAuthorize = () => {
       isAxiosError(error) && error.status === 500 && failureCount < 2,
     onError: async () => await signOut(),
     onSuccess: async (res) => {
-      setLogin(res.data.data);
+      setLogin(res.data.data!);
       const matchedRoute = router.matchRoutes(location).pop(); // Get the closest matched route
       if (matchedRoute) {
         const exactRoutePath: string | undefined = matchedRoute.id; // Get the route schema id

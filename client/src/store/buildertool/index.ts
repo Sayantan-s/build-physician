@@ -67,6 +67,7 @@ const useBuilderRootToolState = create<BuilderToolState & BuilderToolAction>()(
         const newNode = MeetingInfo.createNode(nodePosition);
         set((state) => {
           state.nodes.push(newNode);
+          state.nodeIndexes[newNode.id] = state.nodes.length;
         });
       },
 
@@ -95,5 +96,7 @@ export const useBuilderToolStore = () =>
       onConnect: state.onConnect,
       onNodeDataChange: state.onNodeDataChange,
       addNewNode: state.addNewNode,
+      setNodes: state.setNodes,
+      setEdges: state.setEdges,
     }))
   );

@@ -4,12 +4,15 @@ from firebase_admin import auth
 from glom import glom
 from config import API_KEY
 from flask import jsonify
+from utils.encoder import  CustomJSONEncoder
+import json
 
 
 class Response:
     def __init__(self, status: int, data) -> None:
         self.status = status
-        self.data = data
+        payload = json.loads(json.dumps(data, cls=CustomJSONEncoder, indent=4))
+        self.data = payload
 
     def success(self):
         return {
