@@ -12,6 +12,7 @@
     "watch-routes": "tsr watch"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
     "@tanstack/react-form": "^0.32.0",
     "@tanstack/react-query": "^5.50.1",
     "@tanstack/react-query-devtools": "^5.50.1",

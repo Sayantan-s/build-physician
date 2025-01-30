@@ -8,8 +8,14 @@ from .user import User
 import uuid
 
 DEFAULT_SCHEMA_STATE = {
-    "nodes": [],
-    "edges": []
+    "nodes": [{
+        "id": f"{str(uuid.uuid4())}__meetingInfo",
+        "type": "meetingInfo",
+        "data": {"meetingDescription": "", "meetingName": ""},
+        "position": {"x": 0, "y": 0},
+    }, ],
+    "edges": [],
+    "nodeIndexes": {}
 }
 
 

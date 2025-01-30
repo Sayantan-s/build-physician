@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { App } from "./app";
 import { NetworkConnection } from "@integrations/network";
 import { Theme } from "@theme";
+import { ReactFlowProvider } from "@xyflow/react";
 
 const rootEl = document.getElementById("root");
 
@@ -11,9 +12,11 @@ if (rootEl) {
   root.render(
     <React.StrictMode>
       <NetworkConnection>
-        <Theme>
-          <App />
-        </Theme>
+        <ReactFlowProvider>
+          <Theme>
+            <App />
+          </Theme>
+        </ReactFlowProvider>
       </NetworkConnection>
     </React.StrictMode>
   );

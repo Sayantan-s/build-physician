@@ -1,4 +1,3 @@
-import { roadmapApi } from "@apis/hooks/useRoadmap";
 import { Visibility } from "@components/stories/atoms/Visibility";
 import { useSwitch } from "@hooks/useSwitch";
 import { FieldApi, useForm } from "@tanstack/react-form";
@@ -16,15 +15,10 @@ interface ICreateRoadmap {
 
 function Roadmaps() {
   const [isOpen, { on, off }] = useSwitch();
-  const { mutate, isPending } = roadmapApi.useCreateRoadmap({ redirect: true });
-  const { isPending: isFetchingAllRoadmaps, data: roadmaps } =
-    roadmapApi.useFetchAllRoadmaps();
-
   const form = useForm<ICreateRoadmap>({
     defaultValues: { name: "", description: "" },
     onSubmit: async ({ value }) => {
       form.reset();
-      await mutate(value);
       off();
     },
   });
@@ -72,17 +66,8 @@ function Roadmaps() {
               />
             )}
           />
-          <button disabled={isPending}>{isPending ? "..." : "Create"}</button>
         </form>
       </Visibility>
-      {roadmaps?.map((roadmap) => (
-        <div key={roadmap.id}>
-          <h3>
-            <Link to={`/roadmaps/${roadmap.id}/edit`}>{roadmap.name}</Link>
-          </h3>
-          <p>{roadmap.description}</p>
-        </div>
-      ))}
     </div>
   );
 }
