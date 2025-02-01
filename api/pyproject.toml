@@ -27,6 +27,7 @@ flask-cors = "^4.0.1"
 redis = "^5.0.7"
 glom = "^23.5.0"
 pymongo = "^4.9.1"
+pandas = "^2.2.3"
 
 
 [build-system]

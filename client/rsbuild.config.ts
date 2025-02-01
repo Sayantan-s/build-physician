@@ -2,6 +2,8 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginStyledComponents } from "@rsbuild/plugin-styled-components";
 import { TanStackRouterRspack } from "@tanstack/router-plugin/rspack";
+import { mfConfig } from "./mf-config";
+
 export default defineConfig({
   dev: {
     assetPrefix: true,
@@ -24,6 +26,7 @@ export default defineConfig({
       transpileTemplateLiterals: true,
       minify: true,
     }),
+    mfConfig(),
   ],
   server: {
     open: true,

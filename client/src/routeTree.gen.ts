@@ -13,11 +13,12 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as NoauthImport } from './routes/_noauth'
 import { Route as AuthImport } from './routes/_auth'
+import { Route as NoauthTestImport } from './routes/_noauth/test'
 import { Route as NoauthSigninImport } from './routes/_noauth/signin'
 import { Route as AuthLayoutImport } from './routes/_auth/_layout'
-import { Route as AuthRoadmapsRoadmapImport } from './routes/_auth/roadmaps.$roadmap'
 import { Route as AuthLayoutDashboardImport } from './routes/_auth/_layout/dashboard'
 import { Route as AuthLayoutRoadmapsIndexImport } from './routes/_auth/_layout/roadmaps.index'
+import { Route as AuthRoadmapsRoadmapEditImport } from './routes/_auth/roadmaps.$roadmap.edit'
 
 // Create/Update Routes
 
@@ -31,6 +32,11 @@ const AuthRoute = AuthImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const NoauthTestRoute = NoauthTestImport.update({
+  path: '/test',
+  getParentRoute: () => NoauthRoute,
+} as any)
+
 const NoauthSigninRoute = NoauthSigninImport.update({
   path: '/signin',
   getParentRoute: () => NoauthRoute,
@@ -38,11 +44,6 @@ const NoauthSigninRoute = NoauthSigninImport.update({
 
 const AuthLayoutRoute = AuthLayoutImport.update({
   id: '/_layout',
-  getParentRoute: () => AuthRoute,
-} as any)
-
-const AuthRoadmapsRoadmapRoute = AuthRoadmapsRoadmapImport.update({
-  path: '/roadmaps/$roadmap',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -54,6 +55,11 @@ const AuthLayoutDashboardRoute = AuthLayoutDashboardImport.update({
 const AuthLayoutRoadmapsIndexRoute = AuthLayoutRoadmapsIndexImport.update({
   path: '/roadmaps/',
   getParentRoute: () => AuthLayoutRoute,
+} as any)
+
+const AuthRoadmapsRoadmapEditRoute = AuthRoadmapsRoadmapEditImport.update({
+  path: '/roadmaps/$roadmap/edit',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -88,6 +94,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoauthSigninImport
       parentRoute: typeof NoauthImport
     }
+    '/_noauth/test': {
+      id: '/_noauth/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof NoauthTestImport
+      parentRoute: typeof NoauthImport
+    }
     '/_auth/_layout/dashboard': {
       id: '/_auth/_layout/dashboard'
       path: '/dashboard'
@@ -95,11 +108,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLayoutDashboardImport
       parentRoute: typeof AuthLayoutImport
     }
-    '/_auth/roadmaps/$roadmap': {
-      id: '/_auth/roadmaps/$roadmap'
-      path: '/roadmaps/$roadmap'
-      fullPath: '/roadmaps/$roadmap'
-      preLoaderRoute: typeof AuthRoadmapsRoadmapImport
+    '/_auth/roadmaps/$roadmap/edit': {
+      id: '/_auth/roadmaps/$roadmap/edit'
+      path: '/roadmaps/$roadmap/edit'
+      fullPath: '/roadmaps/$roadmap/edit'
+      preLoaderRoute: typeof AuthRoadmapsRoadmapEditImport
       parentRoute: typeof AuthImport
     }
     '/_auth/_layout/roadmaps/': {
@@ -130,22 +143,24 @@ const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
 
 interface AuthRouteChildren {
   AuthLayoutRoute: typeof AuthLayoutRouteWithChildren
-  AuthRoadmapsRoadmapRoute: typeof AuthRoadmapsRoadmapRoute
+  AuthRoadmapsRoadmapEditRoute: typeof AuthRoadmapsRoadmapEditRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthLayoutRoute: AuthLayoutRouteWithChildren,
-  AuthRoadmapsRoadmapRoute: AuthRoadmapsRoadmapRoute,
+  AuthRoadmapsRoadmapEditRoute: AuthRoadmapsRoadmapEditRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface NoauthRouteChildren {
   NoauthSigninRoute: typeof NoauthSigninRoute
+  NoauthTestRoute: typeof NoauthTestRoute
 }
 
 const NoauthRouteChildren: NoauthRouteChildren = {
   NoauthSigninRoute: NoauthSigninRoute,
+  NoauthTestRoute: NoauthTestRoute,
 }
 
 const NoauthRouteWithChildren =
@@ -154,16 +169,18 @@ const NoauthRouteWithChildren =
 export interface FileRoutesByFullPath {
   '': typeof AuthLayoutRouteWithChildren
   '/signin': typeof NoauthSigninRoute
+  '/test': typeof NoauthTestRoute
   '/dashboard': typeof AuthLayoutDashboardRoute
-  '/roadmaps/$roadmap': typeof AuthRoadmapsRoadmapRoute
+  '/roadmaps/$roadmap/edit': typeof AuthRoadmapsRoadmapEditRoute
   '/roadmaps': typeof AuthLayoutRoadmapsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '': typeof AuthLayoutRouteWithChildren
   '/signin': typeof NoauthSigninRoute
+  '/test': typeof NoauthTestRoute
   '/dashboard': typeof AuthLayoutDashboardRoute
-  '/roadmaps/$roadmap': typeof AuthRoadmapsRoadmapRoute
+  '/roadmaps/$roadmap/edit': typeof AuthRoadmapsRoadmapEditRoute
   '/roadmaps': typeof AuthLayoutRoadmapsIndexRoute
 }
 
@@ -173,24 +190,38 @@ export interface FileRoutesById {
   '/_noauth': typeof NoauthRouteWithChildren
   '/_auth/_layout': typeof AuthLayoutRouteWithChildren
   '/_noauth/signin': typeof NoauthSigninRoute
+  '/_noauth/test': typeof NoauthTestRoute
   '/_auth/_layout/dashboard': typeof AuthLayoutDashboardRoute
-  '/_auth/roadmaps/$roadmap': typeof AuthRoadmapsRoadmapRoute
+  '/_auth/roadmaps/$roadmap/edit': typeof AuthRoadmapsRoadmapEditRoute
   '/_auth/_layout/roadmaps/': typeof AuthLayoutRoadmapsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/signin' | '/dashboard' | '/roadmaps/$roadmap' | '/roadmaps'
+  fullPaths:
+    | ''
+    | '/signin'
+    | '/test'
+    | '/dashboard'
+    | '/roadmaps/$roadmap/edit'
+    | '/roadmaps'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/signin' | '/dashboard' | '/roadmaps/$roadmap' | '/roadmaps'
+  to:
+    | ''
+    | '/signin'
+    | '/test'
+    | '/dashboard'
+    | '/roadmaps/$roadmap/edit'
+    | '/roadmaps'
   id:
     | '__root__'
     | '/_auth'
     | '/_noauth'
     | '/_auth/_layout'
     | '/_noauth/signin'
+    | '/_noauth/test'
     | '/_auth/_layout/dashboard'
-    | '/_auth/roadmaps/$roadmap'
+    | '/_auth/roadmaps/$roadmap/edit'
     | '/_auth/_layout/roadmaps/'
   fileRoutesById: FileRoutesById
 }
@@ -225,13 +256,14 @@ export const routeTree = rootRoute
       "filePath": "_auth.tsx",
       "children": [
         "/_auth/_layout",
-        "/_auth/roadmaps/$roadmap"
+        "/_auth/roadmaps/$roadmap/edit"
       ]
     },
     "/_noauth": {
       "filePath": "_noauth.tsx",
       "children": [
-        "/_noauth/signin"
+        "/_noauth/signin",
+        "/_noauth/test"
       ]
     },
     "/_auth/_layout": {
@@ -246,12 +278,16 @@ export const routeTree = rootRoute
       "filePath": "_noauth/signin.tsx",
       "parent": "/_noauth"
     },
+    "/_noauth/test": {
+      "filePath": "_noauth/test.tsx",
+      "parent": "/_noauth"
+    },
     "/_auth/_layout/dashboard": {
       "filePath": "_auth/_layout/dashboard.tsx",
       "parent": "/_auth/_layout"
     },
-    "/_auth/roadmaps/$roadmap": {
-      "filePath": "_auth/roadmaps.$roadmap.tsx",
+    "/_auth/roadmaps/$roadmap/edit": {
+      "filePath": "_auth/roadmaps.$roadmap.edit.tsx",
       "parent": "/_auth"
     },
     "/_auth/_layout/roadmaps/": {
