@@ -48,12 +48,12 @@ const useSignOut = () => {
     },
     onSuccess: async () => {
       setLogout();
-      router.navigate({
-        to: "/signin",
-        search: {
-          redirect: window.location.href,
-        },
-      });
+      // router.navigate({
+      //   to: "/signin",
+      //   search: {
+      //     redirect: window.location.href,
+      //   },
+      // });
     },
   });
 };

@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Editor from "@monaco-editor/react";
-import { useState } from "react";
-import { Button } from "@components/stories/Button";
+// import Editor from "@monaco-editor/react";
+import React, { useState } from "react";
 import axios from "axios";
+import Editor from "editor";
 
 export const Route = createFileRoute("/_auth/roadmaps/$roadmap/edit")({
   component: Roadmap,
@@ -50,14 +50,7 @@ function Roadmap() {
 
   return (
     <div>
-      <Editor
-        height="90vh"
-        defaultLanguage="javascript"
-        defaultValue="// some comment"
-        value={code}
-        onChange={handleChange}
-      />
-      <Button onClick={handleSubmitCode}>Submit</Button>
+      <Editor />
       {output ? <div>{output}</div> : null}
     </div>
   );

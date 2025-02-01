@@ -2,8 +2,6 @@ import flask
 from flask_restx import Namespace, Resource
 from db.models.user import User
 from utils.response import Response
-from utils.encoder import CustomJSONEncoder
-import json
 
 api = Namespace('auth', description='Auth related operations')
 
