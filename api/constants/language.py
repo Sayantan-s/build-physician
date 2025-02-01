@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Language(Enum):
     TYPESCRIPT = ("typescript", ["deno", "deno-ts"])
     GO = ("go", ["go", "golang"])

@@ -11,7 +11,6 @@ from utils.response import Response
 from flask_cors import CORS
 from integrations.session import Session
 
-
 app = Flask(__name__)
 CORS(app)
 
@@ -23,6 +22,7 @@ Namespaces(api)
 
 port = PORT or 8080
 
+
 @app.before_request
 def before_request():
     return Response.before_request()
@@ -31,4 +31,4 @@ def before_request():
 if __name__ == '__main__':
     app.run(port=port, debug=True, host='localhost')
     Database.init()
-    threading.Thread(target=email_queue.consume).start()
+    email_queue.consume()

@@ -1,6 +1,6 @@
 ### 🖋️ Topic
 
-Effortlessly create interactive meeting roadmaps and seamlessly schedule meetings using Zoom and Google Meet APIs. Whether you're planning a complex project or organizing a simple team meeting, our tool streamlines the process, making scheduling and managing meetings easier than ever. Enhance your productivity with intuitive roadmap visuals and integrated scheduling capabilities.
+Effortlessly conduct machine coding interviews and seamlessly generate structured reports. Whether you're assessing candidates for a technical role or conducting real-time coding evaluations, our tool streamlines the process, making interview management and report generation easier than ever. Enhance your hiring workflow with intuitive coding environments and automated assessment capabilities.
 
 ### 🛠️ Languages and Tools
 

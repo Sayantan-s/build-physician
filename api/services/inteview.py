@@ -12,18 +12,23 @@ def send_invites(contract: SendInviteModel):
     meeting_code = Repo.meeting.generate_meeting_code()
 
     # create a interview
-    create_interview_contract = {
-        "language": contract.language,
+    pocs = {
         "interviewee_name": contract.interviewee.name,
         "interviewee_email": contract.interviewee.email,
         "interviewer_name": contract.interviewer.name,
         "interviewer_email": contract.interviewer.email,
-        "meeting_code": meeting_code,
-        "created_by": user_id
     }
-    interview = Repo.interview.create()
+    meeting_info = {
+        "meeting_code": meeting_code,
+    }
+    create_interview_contract = {
+        "language": contract.language,
+        "created_by": user_id,
+        **pocs,**meeting_info
+    }
+    Repo.interview.create(create_interview_contract)
 
     # send emails to interviewer and interviewee
-    email_queue.publish({ "meeting_code": meeting_code })
-    print(user_id, 'Meeting created!!')
+    Repo.meeting.notify_pocs({**pocs, **meeting_info})
+
     return {"message": "Successfully sent invites!"}

@@ -1,4 +1,5 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { Auth } from "@components/utils/Auth";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_noauth")({
   beforeLoad: async ({ context }) => {
@@ -7,4 +8,13 @@ export const Route = createFileRoute("/_noauth")({
         to: "/dashboard",
       });
   },
+  component: NoAuthWapper,
 });
+
+function NoAuthWapper() {
+  return (
+    <Auth>
+      <Outlet />
+    </Auth>
+  );
+}
