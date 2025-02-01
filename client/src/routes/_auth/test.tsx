@@ -1,57 +1,50 @@
-import { FieldApi, useForm } from "@tanstack/react-form";
-import { createFileRoute } from "@tanstack/react-router";
-import { FormEventHandler } from "react";
+import { interviewApi } from '@apis/hooks/useInterview'
+import { IInviteParticipants } from '@apis/http/endpoints/interview'
+import { FieldApi, useForm } from '@tanstack/react-form'
+import { createFileRoute } from '@tanstack/react-router'
+import { FormEventHandler } from 'react'
 
-export const Route = createFileRoute("/_noauth/test")({
+export const Route = createFileRoute('/_auth/test')({
   component: Test,
-});
-
-interface IParticipantDetail {
-  name: string;
-  email: string;
-}
-
-interface IInviteParticipants {
-  candidate: IParticipantDetail;
-  interviewer: IParticipantDetail;
-  language: string;
-}
+})
 
 function Test() {
+  const { mutate: sendInvites, isPending } = interviewApi.useSendInvites()
+
   const form = useForm<IInviteParticipants>({
     defaultValues: {
-      candidate: {
-        name: "",
-        email: "",
+      interviewee: {
+        name: '',
+        email: '',
       },
-      interviewer: { name: "", email: "" },
-      language: "",
+      interviewer: { name: '', email: '' },
+      language: '',
     },
     onSubmit: async ({ value }) => {
-      form.reset();
-      console.log(value);
+      form.reset()
+      await sendInvites({ ...value, language: 'javascript' })
     },
-  });
+  })
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    form.handleSubmit();
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    form.handleSubmit()
+  }
 
   const handleChange = (
-    field: FieldApi<IInviteParticipants, any, undefined, undefined, string>
+    field: FieldApi<IInviteParticipants, any, undefined, undefined, string>,
   ) => {
     return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      field.handleChange(e.target.value);
-    };
-  };
+      field.handleChange(e.target.value)
+    }
+  }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <form.Field
-          name="candidate.name"
+          name="interviewee.name"
           children={(field) => (
             <input
               name={field.name}
@@ -63,7 +56,7 @@ function Test() {
           )}
         />
         <form.Field
-          name="candidate.email"
+          name="interviewee.email"
           children={(field) => (
             <textarea
               name={field.name}
@@ -101,5 +94,5 @@ function Test() {
         <button>Send Invites</button>
       </form>
     </div>
-  );
+  )
 }

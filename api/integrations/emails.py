@@ -4,12 +4,13 @@ from flask import jsonify
 
 resend.api_key = RESEND_API_KEY
 
-def send_email(meeting_uri: str):
-    params: resend.Emails.SendParams = {
-        "from": "Acme <onboarding@resend.dev>",
-        "to": ["sssamanta789@gmail.com"],
-        "subject": "hello world",
-        "html": f"<strong>{meeting_uri}</strong>",
+
+def send_email(sendTo: list[str], html: str, subject: str):
+    payload = {
+        "from": "sssamanta789@gmail.com",
+        'to': sendTo,
+        "subject": subject,
+        'html': html
     }
-    r = resend.Emails.send(params)
+    r = resend.Emails.send(payload)
     return jsonify(r)

@@ -1,4 +1,5 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { Auth } from "@components/utils/Auth";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: async ({ context }) => {
@@ -10,4 +11,13 @@ export const Route = createFileRoute("/_auth")({
         },
       });
   },
+  component: AuthWapper,
 });
+
+function AuthWapper() {
+  return (
+    <Auth>
+      <Outlet />
+    </Auth>
+  );
+}

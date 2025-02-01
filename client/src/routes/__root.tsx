@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-import React, { Suspense } from "react";
+import React, { Fragment, Suspense } from "react";
 import { useAuthStore } from "@store/auth";
 import { Auth } from "@components/utils/Auth";
 
@@ -24,11 +24,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function Root() {
   return (
-    <Auth>
+    <Fragment>
       <Outlet />
       <Suspense>
         <TanStackRouterDevtools position="top-right" />
       </Suspense>
-    </Auth>
+    </Fragment>
   );
 }
