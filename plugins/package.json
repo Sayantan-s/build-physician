@@ -1,0 +1,17 @@
+{
+  "name": "build-physician",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^5.0.0",
+    "@types/webpack": "^5.28.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "version": "1.0.0"
+}
