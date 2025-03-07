@@ -1,6 +1,6 @@
 {
   "name": "build-physician",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Webpack plugin for build analysis and dependency visualization",
   "module": "index.ts",
   "type": "module",
@@ -11,7 +11,8 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
-    "@types/webpack": "^5.28.5"
+    "@types/webpack": "^5.28.5",
+    "build-physician": "^1.0.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
