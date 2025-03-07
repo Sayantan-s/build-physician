@@ -1,6 +1,6 @@
 {
   "name": "build-physician",
-  "version": "1.0.3",
+  "version": "1.0.31",
   "description": "A Webpack plugin for build analysis and dependency visualization",
   "module": "index.ts",
   "type": "module",
