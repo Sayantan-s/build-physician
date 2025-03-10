@@ -1,6 +1,6 @@
 from enum import Enum
 
 class UserType(str, Enum):
-    ADMIN = 'ADMIN'
-    INTERVIEWER = 'INTERVIEWER'
-    INTERVIEWEE = 'INTERVIEWEE'
+    ADMIN = 'admin'
+    SUPER_ADMIN = "super_admin"
+    USER = "user"
