@@ -15,3 +15,6 @@ def create_build(payload):
     }
     mongo.builds.insert_one(contract)
     return build_id
+
+def find_build_by_id(build_id: str):
+    return mongo.builds.find_one({ "buildId": build_id })
