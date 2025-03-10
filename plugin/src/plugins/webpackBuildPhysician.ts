@@ -127,7 +127,8 @@ export class BuildPhysician {
       const { data: buildId } = await builds.post<string>("/", this.results);
       console.log(":: Build Instance Created!".green);
 
-      const _genLink = `abc.vercel.app/${buildId}`.red.underline.red;
+      const _genLink = `https://slot-in-k3d3.vercel.app/build/${buildId}`.red
+        .underline.red;
       const _genLinkPreffix = "Check your bundle's insights at:: ".gray;
       const _genLinkText = _genLinkPreffix.concat(_genLink);
       console.log(_genLinkText);
