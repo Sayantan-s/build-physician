@@ -1,0 +1,23 @@
+{
+  "name": "build-physician",
+  "version": "1.0.33",
+  "description": "A Webpack plugin for build analysis and dependency visualization",
+  "module": "index.ts",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "devDependencies": {
+    "@types/webpack": "^5.28.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.8.2",
+    "colorts": "^0.1.63",
+    "dotenv": "^16.4.7"
+  }
+}

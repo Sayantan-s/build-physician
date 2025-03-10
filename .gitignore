@@ -7,7 +7,7 @@
 # Dist
 */node_modules
 dist/
-
+example
 # IDE
 .vscode/*
 !.vscode/extensions.json
@@ -19,3 +19,4 @@ api/**/*__pycache__
 api/**/token.json
 api/**/client_secret_735258533581-totb5tqppc6sknottk4djqq8mmr5g810.apps.googleusercontent.com.json
 api/**/firebase-adminsdk-o3fku-a740a9dc1d.json
+

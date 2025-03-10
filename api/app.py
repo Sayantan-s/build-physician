@@ -3,10 +3,9 @@ import threading
 from flask import Flask
 from flask_restx import Api
 from apis import Namespaces
-from integrations.mq.emails import email_queue
 from integrations.firebase import Firebase
 from config import PORT
-from db import Database
+from db import Database, Mongo
 from utils.response import Response
 from flask_cors import CORS
 from integrations.session import Session
@@ -31,4 +30,3 @@ def before_request():
 if __name__ == '__main__':
     app.run(port=port, debug=True, host='localhost')
     Database.init()
-    email_queue.consume()

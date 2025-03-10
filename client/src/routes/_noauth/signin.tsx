@@ -1,11 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { authApi } from "@apis/hooks";
 
-export const Route = createFileRoute("/_noauth/signin")({
-  component: SignIn,
-});
-
-function SignIn() {
+export function SignIn() {
   const { mutate: signIn, isPending } = authApi.useSignIn();
 
   const handleSignIn = async () => await signIn();
