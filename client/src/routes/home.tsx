@@ -16,52 +16,16 @@ export const Home = () => {
       income: 0.0,
       expenditureRatio: [50],
     },
-    validators: {
-      // onChange: userSchema,
-      onChange: ({ value }) => {
-        console.log(value);
-      },
-      onSubmit: async ({ value }) => {
-        // Do something with form data
-        console.log(value);
-      },
-    },
+    // validators: {
+    //   // onChange: userSchema,
+    //   onChange: ({ value }) => {
+    //     console.log(value);
+    //   },
+    //   onSubmit: async ({ value }) => {
+    //     // Do something with form data
+    //     console.log(value);
+    //   },
+    // },
   });
-  return (
-    <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <form.Field name="income">
-          {(field) => {
-            return (
-              <input
-                name={field.name}
-                type="number"
-                onChange={(e) => field.handleChange(e.target.valueAsNumber)}
-                placeholder="Income value"
-              />
-            );
-          }}
-        </form.Field>
-        <form.Field name="expenditureRatio">
-          {(field) => {
-            return (
-              <Slider
-                name={field.name}
-                value={field.state.value}
-                step={1}
-                onValueChange={(value) => field.handleChange(value)}
-                className="w-[60%]"
-              />
-            );
-          }}
-        </form.Field>
-      </form>
-    </div>
-  );
+  return <div>Hello</div>;
 };
