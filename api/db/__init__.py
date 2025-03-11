@@ -23,7 +23,9 @@ class Mongo:
         self._client = MongoClient(f"mongodb+srv://Sayantan:{encoded_pwd}@jwitterodev.agsawv4.mongodb.net/dev?retryWrites=true&w=majority", server_api=ServerApi('1'))
         self._ping()
         self.db = self._client.get_database("dev")
-        self.builds = self.db.get_collection('builds')
+        
+        #collections
+        self.builds = self.db.get_collection('build_dtl')
 
     def _ping(self):
         try:
