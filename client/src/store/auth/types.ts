@@ -37,6 +37,7 @@ export interface IEdge {
 export interface ResultMetrics {
   buildTime: string;
   bundleSize: number;
+  hmrTime: string;
   plugins: Plugin[];
 }
 

@@ -1,16 +1,26 @@
 import { Compiler } from "webpack";
 import "colorts/lib/string";
-import { BuildMetrics, PLUGIN_NAME, TimedModule, IResults } from "./type";
+import {
+  BuildMetrics,
+  PLUGIN_NAME,
+  TimedModule,
+  IResults,
+  IConstructor,
+} from "./type";
 import { builds } from "../api";
+import { Logger } from "../utils/log";
+import path from "path";
 
 export class BuildPhysician {
   private metrics: BuildMetrics;
   private results: IResults;
+  private subscriber: IConstructor | null;
   private pluginName = PLUGIN_NAME;
 
-  constructor() {
+  constructor(subscriber: IConstructor | void) {
     this.metrics = {};
     this.results = {};
+    this.subscriber = subscriber || null;
   }
 
   apply(compiler: Compiler) {
@@ -42,7 +52,24 @@ export class BuildPhysician {
           (module: TimedModule) => {
             const diff = process.hrtime(module.startTime);
             const timeMs = diff[0] * 1000 + diff[1] / 1e6;
-            pluginTimes.set(module.identifier() || "unknown", timeMs);
+            const identifierName = module.identifier() || "unknown";
+
+            const ext = path.extname(identifierName);
+
+            let type = "unknown";
+            if (ext.match(/\.js|\.jsx|\.ts|\.tsx/)) type = "script";
+            else if (ext.match(/\.css|\.scss|\.less/)) type = "style";
+            else if (ext.match(/\.png|\.jpg|\.jpeg|\.gif|\.svg/))
+              type = "image";
+            else if (ext.match(/\.html/)) type = "html";
+            else if (ext.match(/\.json/)) type = "json";
+
+            pluginTimes.set(identifierName, {
+              time: timeMs,
+              size: module.size(),
+              type,
+              extension: ext,
+            });
           }
         );
       });
@@ -52,9 +79,9 @@ export class BuildPhysician {
 
     compiler.hooks.done.tap(this.pluginName, () => {
       this.metrics.plugins = Array.from(pluginTimes.entries()).map(
-        ([name, time]) => ({
+        ([name, metaData]) => ({
           name,
-          time: time.toFixed(2),
+          ...metaData,
         })
       );
     });
@@ -94,8 +121,23 @@ export class BuildPhysician {
         bundleSize: this.metrics.bundleSize,
         plugins: this.metrics.plugins,
       };
+
       this.results.resultMetrics = buildData;
-      console.log("Overall build time".red);
+      Logger.info("🔥 Build time", `${this.metrics.totalBuildTime} ms`);
+    });
+
+    // Track Hot Module Replacement (HMR) time
+    compiler.hooks.invalid.tap(this.pluginName, () => {
+      this.metrics.startTime = process.hrtime();
+    });
+
+    compiler.hooks.done.tap(this.pluginName, () => {
+      if (this.metrics.startTime) {
+        const diff = process.hrtime(this.metrics.startTime);
+        this.metrics.hmrTime = (diff[0] * 1000 + diff[1] / 1e6).toFixed(2);
+        this.results.resultMetrics.hmrTime = this.metrics.hmrTime;
+        Logger.info("🔥 HMR Update Time", `${this.metrics.hmrTime} ms`);
+      }
     });
   }
 
@@ -117,21 +159,19 @@ export class BuildPhysician {
 
       const data = { nodes, edges };
       this.results.depGraphMetrics = data;
-      console.log("Depgraph metric time".yellow);
+      Logger.info("🔥 Depgraph created");
     });
   }
 
   private createBuildRecord(compiler: Compiler) {
     compiler.hooks.done.tapAsync(this.pluginName, async () => {
-      console.log(":: Creating Build Instance".yellow);
       const { data: buildId } = await builds.post<string>("/", this.results);
-      console.log(":: Build Instance Created!".green);
-
+      Logger.info("Build Instance Created!".green);
       const _genLink = `https://slot-in-k3d3.vercel.app/build/${buildId}`.red
         .underline.red;
       const _genLinkPreffix = "Check your bundle's insights at:: ".gray;
-      const _genLinkText = _genLinkPreffix.concat(_genLink);
-      console.log(_genLinkText);
+      Logger.info(_genLinkPreffix, _genLink);
+      this.subscriber?.emitOnBuildCompete?.({ ...this.results, buildId });
     });
   }
 }

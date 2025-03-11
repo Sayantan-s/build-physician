@@ -7,6 +7,7 @@ from utils.key_gen import generate_unique_key
 def create_build(payload):
     build_id = generate_unique_key(prefix='build')
     now = datetime.datetime.now()
+    print(payload)
     contract ={
         **payload,
         "buildId": build_id,

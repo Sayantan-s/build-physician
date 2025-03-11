@@ -3,6 +3,7 @@ import { Module } from "webpack";
 interface IPlugin {
   name: string;
   time: string;
+  size: number;
 }
 
 export interface BuildMetrics {
@@ -10,6 +11,8 @@ export interface BuildMetrics {
   totalBuildTime?: string;
   plugins?: IPlugin[];
   bundleSize?: number;
+  hmrStartTime?: [number, number];
+  hmrTime?: string;
 }
 
 export interface TimedModule extends Module {
@@ -22,6 +25,7 @@ export interface IResultMetrics {
   buildTime?: string;
   bundleSize?: number;
   plugins?: IPlugin[];
+  hmrTime?: string;
 }
 
 interface INode {
@@ -46,3 +50,11 @@ export interface IResults {
 }
 
 export const PLUGIN_NAME = "BuildPhysician" as const;
+
+export interface IConstructor {
+  emitOnBuildCompete?: (
+    result: IResults & {
+      buildId: string;
+    }
+  ) => void;
+}
