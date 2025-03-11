@@ -10,9 +10,13 @@ export const App = () => {
   return (
     <Routes>
       <Route index element={<Home />} />
-      <Route path="build">
-        <Route element={<Builds />} index />
-        <Route element={<Build />} path=":buildId" />
+      <Route path="projects">
+        <Route path=":projectId">
+          <Route path="builds">
+            <Route element={<Builds />} index />
+            <Route element={<Build />} path=":buildId" />
+          </Route>
+        </Route>
       </Route>
     </Routes>
   );

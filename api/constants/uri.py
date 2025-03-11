@@ -3,3 +3,4 @@ def uri_formatter(endpoint: str):
 
 AUTH_ENDPOINT = uri_formatter('auth')
 BUILDS_ENDPOINT=uri_formatter('builds')
+PROJECTS_ENDPOINT=uri_formatter('projects')

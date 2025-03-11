@@ -26,6 +26,7 @@ class Mongo:
         
         #collections
         self.builds = self.db.get_collection('build_dtl')
+        self.projects = self.db.get_collection('project_dtl')
 
     def _ping(self):
         try:
