@@ -21,16 +21,9 @@ Namespaces(api)
 
 port = int(PORT) or 8080
 
-
-
-@app.route('/')
-def home():
-    return "Hello, Koyeb!"
-#
-# @app.before_request
-# def before_request():
-#     return Response.before_request()
-
+@app.before_request
+def before_request():
+    return Response.before_request()
 
 if __name__ == '__main__':
     app.run(port=port, debug=True, host='0.0.0.0')
