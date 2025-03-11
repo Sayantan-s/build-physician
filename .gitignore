@@ -7,7 +7,8 @@
 # Dist
 */node_modules
 dist/
-example
+example/
+
 # IDE
 .vscode/*
 !.vscode/extensions.json
