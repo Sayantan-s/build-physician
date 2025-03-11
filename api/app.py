@@ -9,6 +9,8 @@ from db import Database, Mongo
 from utils.response import Response
 from flask_cors import CORS
 from integrations.session import Session
+import uvicorn
+
 
 app = Flask(__name__)
 CORS(app)
@@ -19,7 +21,7 @@ api = Api(app, version='1.0', title='Slotin REST API', description='Logic to sch
 Session(app)
 Namespaces(api)
 
-port = PORT or 8080
+port = int(PORT) or 8080
 
 
 @app.before_request
@@ -28,5 +30,5 @@ def before_request():
 
 
 if __name__ == '__main__':
-    app.run(port=port, debug=True, host='localhost')
+    app.run(port=port, debug=True, host='0.0.0.0')
     Database.init()
