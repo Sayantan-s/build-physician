@@ -52,6 +52,7 @@ export interface IResults {
 export const PLUGIN_NAME = "BuildPhysician" as const;
 
 export interface IConstructor {
+  projectId: string;
   emitOnBuildCompete?: (
     result: IResults & {
       buildId: string;

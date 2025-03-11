@@ -14,13 +14,15 @@ import path from "path";
 export class BuildPhysician {
   private metrics: BuildMetrics;
   private results: IResults;
-  private subscriber: IConstructor | null;
+  private config: IConstructor | null;
   private pluginName = PLUGIN_NAME;
 
-  constructor(subscriber: IConstructor | void) {
+  constructor(config: IConstructor | void) {
     this.metrics = {};
     this.results = {};
-    this.subscriber = subscriber || null;
+    if (config && !config.projectId)
+      throw new Error("projectId is not mentioned!");
+    this.config = config || null;
   }
 
   apply(compiler: Compiler) {
@@ -165,13 +167,18 @@ export class BuildPhysician {
 
   private createBuildRecord(compiler: Compiler) {
     compiler.hooks.done.tapAsync(this.pluginName, async () => {
-      const { data: buildId } = await builds.post<string>("/", this.results);
+      const data = {
+        ...this.results,
+        projectId: this.config.projectId,
+      };
+      const { data: buildId } = await builds.post<string>("/", data);
       Logger.info("Build Instance Created!".green);
-      const _genLink = `https://slot-in-k3d3.vercel.app/build/${buildId}`.red
-        .underline.red;
+      const _genLink =
+        `https://slot-in-k3d3.vercel.app/projects/${this.config.projectId}/builds/${buildId}`
+          .red.underline.red;
       const _genLinkPreffix = "Check your bundle's insights at:: ".gray;
       Logger.info(_genLinkPreffix, _genLink);
-      this.subscriber?.emitOnBuildCompete?.({ ...this.results, buildId });
+      this.config?.emitOnBuildCompete?.({ ...this.results, buildId });
     });
   }
 }
