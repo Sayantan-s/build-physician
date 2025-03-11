@@ -9,8 +9,6 @@ from db import Database, Mongo
 from utils.response import Response
 from flask_cors import CORS
 from integrations.session import Session
-import uvicorn
-
 
 app = Flask(__name__)
 CORS(app)
@@ -24,9 +22,14 @@ Namespaces(api)
 port = int(PORT) or 8080
 
 
-@app.before_request
-def before_request():
-    return Response.before_request()
+
+@app.route('/')
+def home():
+    return "Hello, Koyeb!"
+#
+# @app.before_request
+# def before_request():
+#     return Response.before_request()
 
 
 if __name__ == '__main__':
