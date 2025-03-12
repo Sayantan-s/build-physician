@@ -44,4 +44,7 @@ export interface ResultMetrics {
 export interface Plugin {
   name: string;
   time: string;
+  type: string;
+  extension: string;
+  size: number;
 }
