@@ -10,6 +10,7 @@ import {
 import { builds } from "../api";
 import { Logger } from "../utils/log";
 import path from "path";
+import Config from "../config";
 
 export class BuildPhysician {
   private metrics: BuildMetrics;
@@ -61,7 +62,7 @@ export class BuildPhysician {
             let type = "unknown";
             if (ext.match(/\.js|\.jsx|\.ts|\.tsx/)) type = "script";
             else if (ext.match(/\.css|\.scss|\.less/)) type = "style";
-            else if (ext.match(/\.png|\.jpg|\.jpeg|\.gif|\.svg/))
+            else if (ext.match(/\.png|\.webp|\.aviff|\.jpg|\.jpeg|\.gif|\.svg/))
               type = "image";
             else if (ext.match(/\.html/)) type = "html";
             else if (ext.match(/\.json/)) type = "json";
@@ -146,11 +147,27 @@ export class BuildPhysician {
   private generateDependencyGraph(compiler: Compiler) {
     compiler.hooks.done.tap(this.pluginName, (stats) => {
       const compilationStats = stats.toJson();
-      const nodes = compilationStats.modules.map((mod) => ({
-        id: mod.id,
-        name: mod.name,
-        size: mod.size,
-      }));
+      const entrypoints = compilationStats.entrypoints;
+      const chunks = compilationStats.chunks;
+
+      const entryModuleIds = Object.values(entrypoints)
+        .flatMap((entry) => entry.chunks)
+        .flatMap(
+          (chunkId) =>
+            chunks.find((chunk) => chunk.id === chunkId)?.modules || []
+        )
+        .map((mod) => mod.id);
+
+      const nodes = compilationStats.modules.map((mod) => {
+        const isRoot = entryModuleIds.includes(mod.id);
+        const isUserCode = !mod.name.includes("node_modules");
+        return {
+          id: mod.id,
+          name: mod.name,
+          size: mod.size,
+          isRoot: isRoot && isUserCode,
+        };
+      });
 
       const edges = compilationStats.modules.flatMap((mod) =>
         (mod.reasons || []).map((reason) => ({
@@ -158,6 +175,8 @@ export class BuildPhysician {
           target: mod.id,
         }))
       );
+
+      console.log(nodes.filter((node) => node.isRoot));
 
       const data = { nodes, edges };
       this.results.depGraphMetrics = data;
@@ -174,7 +193,7 @@ export class BuildPhysician {
       const { data: buildId } = await builds.post<string>("/", data);
       Logger.info("Build Instance Created!".green);
       const _genLink =
-        `https://slot-in-k3d3.vercel.app/projects/${this.config.projectId}/builds/${buildId}`
+        `${Config.BUILD_PHY_CLIENT_URL}/projects/${this.config.projectId}/builds/${buildId}`
           .red.underline.red;
       const _genLinkPreffix = "Check your bundle's insights at:: ".gray;
       Logger.info(_genLinkPreffix, _genLink);

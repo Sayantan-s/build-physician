@@ -1,42 +1,18 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { IUser } from "./types";
+import { IAuthAction, IAuthState } from "./types";
 import { immer } from "zustand/middleware/immer";
+import { authState } from "./state";
+import { authActions } from "./actions";
 
-export interface IAuthState {
-  isAuthenticated: boolean;
-  user: IUser | null;
-  isPending: boolean;
-}
-
-export interface IAuthAction {
-  setLogin: (payload: IUser) => void;
-  setPendingStatus: (pendingStatus: boolean) => void;
-  setLogout: () => void;
-}
-
-export const useRootAuthState = create<IAuthState & IAuthAction>()(
+const useRootAuthState = create<IAuthState & IAuthAction>()(
   devtools(
     immer((set) => ({
-      isPending: true,
-      isAuthenticated: false,
-      user: null,
-      setPendingStatus: (pendingStatus) =>
-        set((state) => {
-          state.isPending = pendingStatus;
-        }),
-      setLogin: (user: IUser) =>
-        set((state) => {
-          state.isAuthenticated = true;
-          state.user = user;
-        }),
-      setLogout: () =>
-        set((state) => {
-          state.isAuthenticated = false;
-          state.user = null;
-        }),
+      ...authState,
+      ...authActions(set),
     }))
   )
 );
 
+export const authRootState = useRootAuthState.getState();
 export const useAuthStore = () => useRootAuthState((state) => state);
