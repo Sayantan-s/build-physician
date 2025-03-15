@@ -1,6 +1,5 @@
-///builds/build_2cClbfWDs
-import { api, IResponse } from "..";
-import { IBuild } from "@store/auth/types";
+import { IBuild } from "@store/build/types";
+import { api } from "..";
 
 const GET_ONE_BUILD_URL = (buildId: string) => `/builds/${buildId}`;
 

@@ -1,3 +1,5 @@
+import { WritableDraft } from "immer";
+
 export interface IUser {
   created_at: Date;
   email: string;
@@ -9,42 +11,21 @@ export interface IUser {
   updated_at: Date;
 }
 
-export interface IBuild {
-  _id: any;
-  depGraphMetrics: DepGraphMetrics;
-  resultMetrics: ResultMetrics;
-  buildId: string;
-  createdAt: string;
-  updatedAt: string;
+export interface IAuthState {
+  isAuthenticated: boolean;
+  user: IUser | null;
+  isPending: boolean;
 }
 
-export interface DepGraphMetrics {
-  nodes: INode[];
-  edges: IEdge[];
+export interface IAuthAction {
+  setLogin: (payload: IUser) => void;
+  setPendingStatus: (pendingStatus: boolean) => void;
+  setLogout: () => void;
 }
 
-export interface INode {
-  id: string;
-  name: string;
-  size: number;
-}
-
-export interface IEdge {
-  source?: string;
-  target: string;
-}
-
-export interface ResultMetrics {
-  buildTime: string;
-  bundleSize: number;
-  hmrTime: string;
-  plugins: Plugin[];
-}
-
-export interface Plugin {
-  name: string;
-  time: string;
-  type: string;
-  extension: string;
-  size: number;
-}
+export type IAuthStateSetterType = (
+  nextStateOrUpdater:
+    | (IAuthState & IAuthAction)
+    | Partial<IAuthState & IAuthAction>
+    | ((state: WritableDraft<IAuthState & IAuthAction>) => void)
+) => void;

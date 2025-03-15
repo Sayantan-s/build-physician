@@ -1,11 +1,11 @@
 import axios from "axios";
-import { Config } from "../config";
+import Config from "../config";
 import { DTO } from "./DTO";
 
 const http = axios.create({
-  baseURL: Config.API_URL,
+  baseURL: Config.BUILD_PHY_API_URL,
   headers: {
-    "X-Api-Key": Config.API_KEY,
+    "X-Api-Key": Config.BUILD_PHY_API_KEY,
   },
 });
 

@@ -4,6 +4,7 @@ import { App } from "./app";
 import { NetworkConnection } from "@integrations/network";
 import { BrowserRouter } from "react-router";
 import "@theme/index.css";
+import { ReactFlowProvider } from "@xyflow/react";
 
 const rootEl = document.getElementById("root");
 
@@ -12,9 +13,11 @@ if (rootEl) {
   root.render(
     <React.StrictMode>
       <BrowserRouter>
-        <NetworkConnection>
-          <App />
-        </NetworkConnection>
+        <ReactFlowProvider>
+          <NetworkConnection>
+            <App />
+          </NetworkConnection>
+        </ReactFlowProvider>
       </BrowserRouter>
     </React.StrictMode>
   );
