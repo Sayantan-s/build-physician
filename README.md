@@ -1,6 +1,6 @@
 ### 🖋️ Topic
 
-Build Physician is a Webpack analysis tool that helps developers diagnose and optimize their frontend bundle with the help of a plugin. It provides real-time insights into bundle size, build time, and dependency graphs—along with AI-driven recommendations to improve performance.
+Build Physician is a Webpack analysis tool that helps developers diagnose and optimize their frontend bundle. It provides real-time insights into bundle size, build time, and dependency graphs—along with AI-driven recommendations to improve performance.
 
 ### 🛠️ Languages and Tools
 
